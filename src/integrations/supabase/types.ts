@@ -14,7 +14,75 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      clienti: {
+        Row: {
+          created_at: string
+          email: string | null
+          id: string
+          indirizzo: string | null
+          nome: string
+          piva: string | null
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          indirizzo?: string | null
+          nome: string
+          piva?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          indirizzo?: string | null
+          nome?: string
+          piva?: string | null
+        }
+        Relationships: []
+      }
+      preventivi: {
+        Row: {
+          cliente: string
+          created_at: string
+          data: string
+          descrizione: string | null
+          id: string
+          imponibile: number | null
+          iva_applicata: boolean | null
+          modello: string | null
+          numero: string
+          totale: number
+          unit: string | null
+        }
+        Insert: {
+          cliente: string
+          created_at?: string
+          data?: string
+          descrizione?: string | null
+          id?: string
+          imponibile?: number | null
+          iva_applicata?: boolean | null
+          modello?: string | null
+          numero: string
+          totale?: number
+          unit?: string | null
+        }
+        Update: {
+          cliente?: string
+          created_at?: string
+          data?: string
+          descrizione?: string | null
+          id?: string
+          imponibile?: number | null
+          iva_applicata?: boolean | null
+          modello?: string | null
+          numero?: string
+          totale?: number
+          unit?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
