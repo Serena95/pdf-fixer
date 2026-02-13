@@ -1,0 +1,22 @@
+{
+  "name": "Gestionale Cilento Kibs",
+  "short_name": "Cilento Kibs",
+  "description": "Gestionale preventivi Cilento Kibs",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#004a99",
+  "theme_color": "#004a99",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
