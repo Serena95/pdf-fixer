@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { clienteSchema } from '@/lib/validation';
 
 export interface Cliente {
   id: string;
@@ -27,16 +28,16 @@ export function useAddCliente() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (c: Omit<Cliente, 'id'>) => {
+      const validated = clienteSchema.parse(c) as Omit<Cliente, 'id'>;
       const { data, error } = await supabase
         .from('clienti')
-        .upsert(c, { onConflict: 'nome' })
+        .upsert(validated, { onConflict: 'nome' })
         .select()
         .single();
       if (error) {
-        // If upsert fails due to no unique constraint, try insert
         const { data: d2, error: e2 } = await supabase
           .from('clienti')
-          .insert(c)
+          .insert(validated)
           .select()
           .single();
         if (e2) throw e2;

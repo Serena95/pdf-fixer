@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { preventivoSchema } from '@/lib/validation';
 
 export interface Preventivo {
   id: string;
@@ -32,7 +33,8 @@ export function useAddPreventivo() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (p: Omit<Preventivo, 'id'>) => {
-      const { data, error } = await supabase.from('preventivi').insert(p).select().single();
+      const validated = preventivoSchema.parse(p) as Omit<Preventivo, 'id'>;
+      const { data, error } = await supabase.from('preventivi').insert(validated).select().single();
       if (error) throw error;
       return data;
     },
