@@ -1,3 +1,5 @@
+import { useAuth } from '@/hooks/useAuth';
+
 interface NavBarProps {
   activeTab: string;
   onTabChange: (tab: string) => void;
@@ -10,6 +12,8 @@ const tabs = [
 ];
 
 export default function NavBar({ activeTab, onTabChange }: NavBarProps) {
+  const { signOut } = useAuth();
+
   return (
     <nav className="flex h-14 items-center bg-[#004a99] px-2 shadow-md">
       {tabs.map((t) => (
@@ -25,6 +29,14 @@ export default function NavBar({ activeTab, onTabChange }: NavBarProps) {
           {t.label}
         </div>
       ))}
+      <div className="ml-auto">
+        <button
+          onClick={signOut}
+          className="text-white text-sm px-4 py-1 hover:bg-[#003d80] rounded"
+        >
+          🚪 Esci
+        </button>
+      </div>
     </nav>
   );
 }
