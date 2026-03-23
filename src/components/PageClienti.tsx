@@ -45,6 +45,17 @@ export default function PageClienti({ onSelectForPreventivo }: Props) {
             </span>
             <div className="flex gap-2">
               <button
+                onClick={() => onSelectForPreventivo?.({
+                  nome: c.nome,
+                  indirizzo: c.indirizzo || '',
+                  piva: c.piva || '',
+                  email: c.email || '',
+                })}
+                className="rounded bg-green-600 px-2.5 py-1 text-[11px] font-bold text-white hover:bg-green-700"
+              >
+                📝 Usa per Preventivo
+              </button>
+              <button
                 onClick={() => setSelected(c as Cliente)}
                 className="rounded bg-[#004a99] px-2.5 py-1 text-[11px] font-bold text-white hover:bg-[#003d80]"
               >

@@ -5,8 +5,14 @@ import { unitConfig, unitOptions, calcTotal, type Modello } from '@/lib/unitConf
 import { generatePDF } from '@/lib/pdfGenerator';
 import { toast } from 'sonner';
 import logoImg from '@/assets/logo.jpg';
+import type { ClientePreload } from '@/pages/Index';
 
-export default function PageCompila() {
+interface Props {
+  preloadCliente?: ClientePreload | null;
+  onClienteConsumed?: () => void;
+}
+
+export default function PageCompila({ preloadCliente, onClienteConsumed }: Props) {
   const { data: clienti = [] } = useClienti();
   const { data: preventivi = [] } = usePreventivi();
   const addCliente = useAddCliente();
