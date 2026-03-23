@@ -2,10 +2,15 @@ import { useState } from 'react';
 import { useClienti, useDeleteCliente } from '@/hooks/useClienti';
 import { toast } from 'sonner';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import type { ClientePreload } from '@/pages/Index';
 
 type Cliente = { id: string; nome: string; indirizzo: string | null; piva: string | null; email: string | null };
 
-export default function PageClienti() {
+interface Props {
+  onSelectForPreventivo?: (cliente: ClientePreload) => void;
+}
+
+export default function PageClienti({ onSelectForPreventivo }: Props) {
   const { data: clienti = [], isLoading } = useClienti();
   const deleteCliente = useDeleteCliente();
   const [selected, setSelected] = useState<Cliente | null>(null);
