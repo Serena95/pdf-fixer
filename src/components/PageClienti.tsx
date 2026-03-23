@@ -32,16 +32,53 @@ export default function PageClienti() {
             key={c.id}
             className="flex items-center justify-between border-b border-gray-200 px-2 py-3"
           >
-            <span>{c.nome}</span>
-            <button
-              onClick={() => handleDelete(c.id)}
-              className="rounded bg-red-500 px-2.5 py-1 text-[11px] font-bold text-white hover:bg-red-600"
+            <span
+              className="cursor-pointer hover:text-[#004a99] hover:underline"
+              onClick={() => setSelected(c as Cliente)}
             >
-              Elimina
-            </button>
+              {c.nome}
+            </span>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setSelected(c as Cliente)}
+                className="rounded bg-[#004a99] px-2.5 py-1 text-[11px] font-bold text-white hover:bg-[#003d80]"
+              >
+                👁 Dettagli
+              </button>
+              <button
+                onClick={() => handleDelete(c.id)}
+                className="rounded bg-red-500 px-2.5 py-1 text-[11px] font-bold text-white hover:bg-red-600"
+              >
+                Elimina
+              </button>
+            </div>
           </div>
         ))
       )}
+
+      <Dialog open={!!selected} onOpenChange={(open) => !open && setSelected(null)}>
+        <DialogContent className="max-w-[450px]">
+          <DialogHeader>
+            <DialogTitle className="text-[#004a99]">{selected?.nome}</DialogTitle>
+          </DialogHeader>
+          {selected && (
+            <div className="space-y-3 text-sm">
+              <div>
+                <span className="font-semibold text-gray-500">Indirizzo</span>
+                <p className="font-medium">{selected.indirizzo || '—'}</p>
+              </div>
+              <div>
+                <span className="font-semibold text-gray-500">P.IVA</span>
+                <p className="font-medium">{selected.piva || '—'}</p>
+              </div>
+              <div>
+                <span className="font-semibold text-gray-500">Email</span>
+                <p className="font-medium">{selected.email || '—'}</p>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
