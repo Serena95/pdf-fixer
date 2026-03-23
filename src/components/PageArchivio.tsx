@@ -29,7 +29,13 @@ export default function PageArchivio() {
       ) : preventivi.length === 0 ? (
         <p className="text-gray-500">Nessun preventivo salvato.</p>
       ) : (
-        preventivi.map((p) => (
+        [...preventivi]
+          .sort((a, b) => {
+            const unitCmp = (a.unit || '').localeCompare(b.unit || '');
+            if (unitCmp !== 0) return unitCmp;
+            return new Date(b.data).getTime() - new Date(a.data).getTime();
+          })
+          .map((p) => (
           <div
             key={p.id}
             className="flex items-center justify-between border-b border-gray-200 px-2 py-3"

@@ -54,7 +54,7 @@ export function generatePDF(data: PdfData) {
   // Logo (destra)
   if (data.logoBase64) {
     try {
-      doc.addImage(data.logoBase64, 'JPEG', W - marginR - 40, 12, 40, 18);
+      doc.addImage(data.logoBase64, 'JPEG', W - marginR - 35, 10, 35, 25);
     } catch (e) {
       console.warn('Errore caricamento logo nel PDF:', e);
     }
