@@ -50,6 +50,17 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
     img.src = logoImg;
   }, []);
 
+  // Preload client from Clienti page
+  useEffect(() => {
+    if (preloadCliente) {
+      setCName(preloadCliente.nome);
+      setCAddr(preloadCliente.indirizzo);
+      setCPiva(preloadCliente.piva);
+      setCEmail(preloadCliente.email);
+      onClienteConsumed?.();
+    }
+  }, [preloadCliente, onClienteConsumed]);
+
   // Auto-generate doc number
   useEffect(() => {
     const year = new Date().getFullYear();
