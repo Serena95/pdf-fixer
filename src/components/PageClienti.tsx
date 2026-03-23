@@ -1,10 +1,14 @@
+import { useState } from 'react';
 import { useClienti, useDeleteCliente } from '@/hooks/useClienti';
 import { toast } from 'sonner';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+
+type Cliente = { id: string; nome: string; indirizzo: string | null; piva: string | null; email: string | null };
 
 export default function PageClienti() {
   const { data: clienti = [], isLoading } = useClienti();
   const deleteCliente = useDeleteCliente();
-
+  const [selected, setSelected] = useState<Cliente | null>(null);
   const handleDelete = async (id: string) => {
     if (!confirm('Eliminare cliente?')) return;
     try {
