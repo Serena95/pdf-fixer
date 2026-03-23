@@ -38,8 +38,13 @@ export default function PageClienti({ onSelectForPreventivo }: Props) {
             className="flex items-center justify-between border-b border-gray-200 px-2 py-3"
           >
             <span
-              className="cursor-pointer hover:text-[#004a99] hover:underline"
-              onClick={() => setSelected(c as Cliente)}
+              className="cursor-pointer font-medium hover:text-[#004a99] hover:underline"
+              onClick={() => onSelectForPreventivo?.({
+                nome: c.nome,
+                indirizzo: c.indirizzo || '',
+                piva: c.piva || '',
+                email: c.email || '',
+              })}
             >
               {c.nome}
             </span>
