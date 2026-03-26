@@ -65,7 +65,7 @@ export const unitOptions = [
   { value: 'CK-01 FIN - Finanza Agevolata', label: 'CK-01 FIN - Finanza Agevolata' },
   { value: 'CK-02 DIG - Servizi Digitali', label: 'CK-02 DIG - Servizi Digitali' },
   { value: 'CK-03 CONS - Consulenze', label: 'CK-03 CONS - Consulenze' },
-  { value: 'CK-04 MARKETING', label: 'CK-04 MARKETING' },
+  { value: 'CK-04 MKT - Comunicazione e Marketing', label: 'CK-04 MKT - Comunicazione e Marketing' },
   { value: 'CK-05 PRODOTTI', label: 'CK-05 PRODOTTI' },
 ];
 
