@@ -11,7 +11,7 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import logoImg from '@/assets/logo.jpg';
+import logoImg from '@/assets/logo.png';
 import type { ClientePreload } from '@/pages/Index';
 
 interface Props {
@@ -54,7 +54,7 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
       canvas.height = img.height;
       const ctx = canvas.getContext('2d');
       ctx?.drawImage(img, 0, 0);
-      setLogoBase64(canvas.toDataURL('image/jpeg'));
+      setLogoBase64(canvas.toDataURL('image/png'));
     };
     img.src = logoImg;
   }, []);
