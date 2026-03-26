@@ -75,7 +75,7 @@ export function calcTotal(
   qty: number
 ): number {
   if (fields === 'FISSO') return v1 * qty;
-  if (fields === 'FISSO_PERC') return (v1 + v3 * (v2 / 100)) * qty;
+  if (fields === 'FISSO_PERC') return v1 * qty;
   if (fields === 'CANONE' || fields === 'PACCHETTO') return v1 * v2;
   if (fields === 'MIX') return v1 + v2 * v3;
   return 0;
