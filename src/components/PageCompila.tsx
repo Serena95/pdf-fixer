@@ -4,6 +4,13 @@ import { usePreventivi, useAddPreventivo } from '@/hooks/usePreventivi';
 import { unitConfig, unitOptions, calcTotal, type Modello } from '@/lib/unitConfig';
 import { generatePDF } from '@/lib/pdfGenerator';
 import { toast } from 'sonner';
+import { format } from 'date-fns';
+import { it } from 'date-fns/locale';
+import { CalendarIcon } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import logoImg from '@/assets/logo.jpg';
 import type { ClientePreload } from '@/pages/Index';
 
@@ -33,6 +40,7 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
   const [vQty, setVQty] = useState(1);
   const [descServizio, setDescServizio] = useState('');
   const [tipoUnita, setTipoUnita] = useState<'Ore' | 'Giornate'>('Ore');
+  const [dataInizio, setDataInizio] = useState<Date | undefined>(undefined);
   const [ivaCheck, setIvaCheck] = useState(false);
   const [logoBase64, setLogoBase64] = useState('');
 
@@ -103,6 +111,7 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
     setModelloIdx(val);
     setV1(0); setV2(0); setV3(0); setVQty(1);
     setTipoUnita('Ore');
+    setDataInizio(undefined);
   };
 
   const handleGenerateAndSave = async () => {
@@ -177,6 +186,7 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
     setUnitValue(''); setModelloIdx('');
     setV1(0); setV2(0); setV3(0); setVQty(1);
     setDescServizio(''); setIvaCheck(false); setSelectedClient('');
+    setDataInizio(undefined);
   };
 
   const showQty = currentModello && (currentModello.fields === 'FISSO' || currentModello.fields === 'FISSO_PERC');
@@ -316,15 +326,32 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
                 />
               </div>
             )}
-            {currentModello.label3 && (
+            {currentModello.hasDataInizio && (
               <div>
-                <span className="text-[13px] font-bold text-gray-600">{currentModello.label3}</span>
-                <input
-                  type="number"
-                  value={v3 || ''}
-                  onChange={(e) => setV3(parseFloat(e.target.value) || 0)}
-                  className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm"
-                />
+                <span className="text-[13px] font-bold text-gray-600">Data Inizio</span>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className={cn(
+                        "mt-1 w-full justify-start text-left font-normal",
+                        !dataInizio && "text-muted-foreground"
+                      )}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {dataInizio ? format(dataInizio, 'dd/MM/yyyy', { locale: it }) : 'Seleziona data'}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={dataInizio}
+                      onSelect={setDataInizio}
+                      initialFocus
+                      className={cn("p-3 pointer-events-auto")}
+                    />
+                  </PopoverContent>
+                </Popover>
               </div>
             )}
             {showQty && (

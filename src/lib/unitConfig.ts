@@ -1,11 +1,12 @@
 export interface Modello {
   nome: string;
-  fields: 'FISSO' | 'FISSO_PERC' | 'CANONE' | 'PACCHETTO' | 'MIX';
+  fields: 'FISSO' | 'FISSO_PERC' | 'CANONE' | 'PACCHETTO' | 'MIX' | 'CAMPAGNA';
   label?: string;
   label1?: string;
   label2?: string;
   label3?: string;
   hasTipoUnita?: boolean;
+  hasDataInizio?: boolean;
 }
 
 export interface UnitConfig {
@@ -45,9 +46,9 @@ export const unitConfig: Record<string, UnitConfig> = {
     bg: '#f3e5f5',
     border: '#7b1fa2',
     modelli: [
-      { nome: 'Canone Mensile', fields: 'CANONE', label: 'Importo Mensile (€) *', label2: 'Mesi' },
-      { nome: 'Campagna Una Tantum', fields: 'FISSO', label: 'Importo Campagna (€) *' },
-      { nome: 'Mix (Setup + Canone)', fields: 'MIX', label: 'Setup Fee (€) *', label2: 'Canone Mensile (€) *', label3: 'Mesi' },
+      { nome: 'Canone Mensile', fields: 'CANONE', label: 'Importo Canone Mensile (€) *', label2: 'Durata (Mesi) *', hasDataInizio: true },
+      { nome: 'Campagna Una Tantum', fields: 'CAMPAGNA', label: 'Importo Totale Campagna (€) *', label2: 'Numero Tranche' },
+      { nome: 'Mix (Setup + Canone)', fields: 'MIX', label: 'Setup Fee (€)', label2: 'Importo Canone Mensile (€)' },
     ],
   },
   'CK-05': {
@@ -64,7 +65,7 @@ export const unitOptions = [
   { value: 'CK-01 FIN - Finanza Agevolata', label: 'CK-01 FIN - Finanza Agevolata' },
   { value: 'CK-02 DIG - Servizi Digitali', label: 'CK-02 DIG - Servizi Digitali' },
   { value: 'CK-03 CONS - Consulenze', label: 'CK-03 CONS - Consulenze' },
-  { value: 'CK-04 MARKETING', label: 'CK-04 MARKETING' },
+  { value: 'CK-04 MKT - Comunicazione e Marketing', label: 'CK-04 MKT - Comunicazione e Marketing' },
   { value: 'CK-05 PRODOTTI', label: 'CK-05 PRODOTTI' },
 ];
 
@@ -78,6 +79,7 @@ export function calcTotal(
   if (fields === 'FISSO') return v1 * qty;
   if (fields === 'FISSO_PERC') return v1 * qty;
   if (fields === 'CANONE' || fields === 'PACCHETTO') return v1 * v2;
-  if (fields === 'MIX') return v1 + v2 * v3;
+  if (fields === 'MIX') return v1 + v2;
+  if (fields === 'CAMPAGNA') return v1;
   return 0;
 }
