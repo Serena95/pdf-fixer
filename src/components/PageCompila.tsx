@@ -32,6 +32,7 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
   const [v3, setV3] = useState(0);
   const [vQty, setVQty] = useState(1);
   const [descServizio, setDescServizio] = useState('');
+  const [tipoUnita, setTipoUnita] = useState<'Ore' | 'Giornate'>('Ore');
   const [ivaCheck, setIvaCheck] = useState(false);
   const [logoBase64, setLogoBase64] = useState('');
 
@@ -101,6 +102,7 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
   const handleModelloChange = (val: string) => {
     setModelloIdx(val);
     setV1(0); setV2(0); setV3(0); setVQty(1);
+    setTipoUnita('Ore');
   };
 
   const handleGenerateAndSave = async () => {
@@ -275,10 +277,25 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
         {/* Dynamic fields */}
         {currentModello && (
           <div className="mt-4 grid grid-cols-2 gap-4">
+            {currentModello.hasTipoUnita && (
+              <div className="col-span-2">
+                <span className="text-[13px] font-bold text-gray-600">Tipo Unità *</span>
+                <select
+                  value={tipoUnita}
+                  onChange={(e) => setTipoUnita(e.target.value as 'Ore' | 'Giornate')}
+                  className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm"
+                >
+                  <option value="Ore">Ore</option>
+                  <option value="Giornate">Giornate</option>
+                </select>
+              </div>
+            )}
             {(currentModello.label || currentModello.label1) && (
               <div>
                 <span className="text-[13px] font-bold text-gray-600">
-                  {currentModello.label || currentModello.label1}
+                  {currentModello.hasTipoUnita
+                    ? `Numero ${tipoUnita} *`
+                    : (currentModello.label || currentModello.label1)}
                 </span>
                 <input
                   type="number"

@@ -5,6 +5,7 @@ export interface Modello {
   label1?: string;
   label2?: string;
   label3?: string;
+  hasTipoUnita?: boolean;
 }
 
 export interface UnitConfig {
@@ -36,7 +37,7 @@ export const unitConfig: Record<string, UnitConfig> = {
     border: '#ef6c00',
     modelli: [
       { nome: 'Solo Fisso', fields: 'FISSO', label: 'Importo Fisso (€) *' },
-      { nome: 'Pacchetto Ore/Giornate', fields: 'PACCHETTO', label: 'Costo Unitario (€) *', label2: 'Quantità Ore/Giorni' },
+      { nome: 'Pacchetto Ore/Giornate', fields: 'PACCHETTO', label: 'Numero Ore *', label2: 'Costo Orario (€/ora) *', hasTipoUnita: true },
       { nome: 'Retainer Mensile', fields: 'CANONE', label: 'Importo Retainer Mensile (€) *', label2: 'Mesi' },
     ],
   },
@@ -61,8 +62,8 @@ export const unitConfig: Record<string, UnitConfig> = {
 
 export const unitOptions = [
   { value: 'CK-01 FIN - Finanza Agevolata', label: 'CK-01 FIN - Finanza Agevolata' },
-  { value: 'CK-02 DIGITALE', label: 'CK-02 DIGITALE' },
-  { value: 'CK-03 CONSULENZA', label: 'CK-03 CONSULENZA' },
+  { value: 'CK-02 DIG - Servizi Digitali', label: 'CK-02 DIG - Servizi Digitali' },
+  { value: 'CK-03 CONS - Consulenze', label: 'CK-03 CONS - Consulenze' },
   { value: 'CK-04 MARKETING', label: 'CK-04 MARKETING' },
   { value: 'CK-05 PRODOTTI', label: 'CK-05 PRODOTTI' },
 ];
