@@ -60,7 +60,7 @@ export const unitConfig: Record<string, UnitConfig> = {
 };
 
 export const unitOptions = [
-  { value: 'CK-01 FINANZA', label: 'CK-01 FINANZA' },
+  { value: 'CK-01 FIN - Finanza Agevolata', label: 'CK-01 FIN - Finanza Agevolata' },
   { value: 'CK-02 DIGITALE', label: 'CK-02 DIGITALE' },
   { value: 'CK-03 CONSULENZA', label: 'CK-03 CONSULENZA' },
   { value: 'CK-04 MARKETING', label: 'CK-04 MARKETING' },
