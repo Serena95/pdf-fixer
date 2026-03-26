@@ -95,10 +95,11 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
 
   const unitKey = unitValue.split(' ')[0];
   const currentConfig = unitKey ? unitConfig[unitKey] : null;
+  const isGeneral = unitKey === 'CK-00';
   const currentModello: Modello | null =
     currentConfig && modelloIdx !== '' ? currentConfig.modelli[parseInt(modelloIdx)] : null;
 
-  const imponibile = currentModello ? calcTotal(currentModello.fields, v1, v2, v3, vQty) : 0;
+  const imponibile = isGeneral ? v1 : (currentModello ? calcTotal(currentModello.fields, v1, v2, v3, vQty) : 0);
   const totale = ivaCheck ? imponibile * 1.22 : imponibile;
 
   const handleUnitChange = (val: string) => {
@@ -116,15 +117,18 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
 
   const handleGenerateAndSave = async () => {
     if (!cName) return toast.error('Inserisci il nome del cliente!');
-    if (!currentModello) return toast.error('Seleziona un modello!');
+    if (!isGeneral && !currentModello) return toast.error('Seleziona un modello!');
 
     // Calc qty and unit price for PDF
     let pdfQty = vQty;
-    let pdfUnitPrice = imponibile / vQty;
-    if (currentModello.fields === 'CANONE' || currentModello.fields === 'PACCHETTO') {
+    let pdfUnitPrice = imponibile / (vQty || 1);
+    if (isGeneral) {
+      pdfQty = 1;
+      pdfUnitPrice = v1;
+    } else if (currentModello?.fields === 'CANONE' || currentModello?.fields === 'PACCHETTO') {
       pdfQty = v2 || 1;
       pdfUnitPrice = v1;
-    } else if (currentModello.fields === 'MIX') {
+    } else if (currentModello?.fields === 'MIX') {
       pdfQty = 1;
       pdfUnitPrice = imponibile;
     }
@@ -163,7 +167,7 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
         totale,
         data: docDate,
         unit: unitValue,
-        modello: currentModello.nome,
+        modello: isGeneral ? 'Generale' : currentModello!.nome,
         descrizione: descServizio,
         imponibile,
         iva_applicata: ivaCheck,
@@ -270,19 +274,36 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
           </select>
         </div>
 
-        <div className="mb-3 flex items-center gap-2.5">
-          <span className="w-[140px] text-[13px] font-bold text-gray-600">Modello:</span>
-          <select
-            value={modelloIdx}
-            onChange={(e) => handleModelloChange(e.target.value)}
-            className="w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm"
-          >
-            <option value="">-- Seleziona Modello --</option>
-            {currentConfig?.modelli.map((m, i) => (
-              <option key={i} value={i}>{m.nome}</option>
-            ))}
-          </select>
-        </div>
+        {!isGeneral && (
+          <div className="mb-3 flex items-center gap-2.5">
+            <span className="w-[140px] text-[13px] font-bold text-gray-600">Modello:</span>
+            <select
+              value={modelloIdx}
+              onChange={(e) => handleModelloChange(e.target.value)}
+              className="w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm"
+            >
+              <option value="">-- Seleziona Modello --</option>
+              {currentConfig?.modelli.map((m, i) => (
+                <option key={i} value={i}>{m.nome}</option>
+              ))}
+            </select>
+          </div>
+        )}
+
+        {/* Free-form fields for CK-00 */}
+        {isGeneral && (
+          <div className="mt-4">
+            <div>
+              <span className="text-[13px] font-bold text-gray-600">Importo (€)</span>
+              <input
+                type="number"
+                value={v1 || ''}
+                onChange={(e) => setV1(parseFloat(e.target.value) || 0)}
+                className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm"
+              />
+            </div>
+          </div>
+        )}
 
         {/* Dynamic fields */}
         {currentModello && (
