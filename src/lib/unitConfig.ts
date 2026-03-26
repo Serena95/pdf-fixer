@@ -19,7 +19,7 @@ export const unitConfig: Record<string, UnitConfig> = {
     border: '#004a99',
     modelli: [
       { nome: 'Pagamento SOLO FISSO', fields: 'FISSO', label: 'Importo Fisso (€) *' },
-      { nome: 'Fee fissa + % su deliberato', fields: 'FISSO_PERC', label1: 'Fee Ingresso (€) *', label2: '% Success Fee', label3: 'Valore Su Deliberato (€) *' },
+      { nome: 'Fee fissa + % su deliberato', fields: 'FISSO_PERC', label1: 'Fee Ingresso (€) *', label2: 'Percentuale su Deliberato (%) *' },
     ],
   },
   'CK-02': {
@@ -60,7 +60,7 @@ export const unitConfig: Record<string, UnitConfig> = {
 };
 
 export const unitOptions = [
-  { value: 'CK-01 FINANZA', label: 'CK-01 FINANZA' },
+  { value: 'CK-01 FIN - Finanza Agevolata', label: 'CK-01 FIN - Finanza Agevolata' },
   { value: 'CK-02 DIGITALE', label: 'CK-02 DIGITALE' },
   { value: 'CK-03 CONSULENZA', label: 'CK-03 CONSULENZA' },
   { value: 'CK-04 MARKETING', label: 'CK-04 MARKETING' },
@@ -75,7 +75,7 @@ export function calcTotal(
   qty: number
 ): number {
   if (fields === 'FISSO') return v1 * qty;
-  if (fields === 'FISSO_PERC') return (v1 + v3 * (v2 / 100)) * qty;
+  if (fields === 'FISSO_PERC') return v1 * qty;
   if (fields === 'CANONE' || fields === 'PACCHETTO') return v1 * v2;
   if (fields === 'MIX') return v1 + v2 * v3;
   return 0;
