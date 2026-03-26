@@ -186,6 +186,7 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
     setUnitValue(''); setModelloIdx('');
     setV1(0); setV2(0); setV3(0); setVQty(1);
     setDescServizio(''); setIvaCheck(false); setSelectedClient('');
+    setDataInizio(undefined);
   };
 
   const showQty = currentModello && (currentModello.fields === 'FISSO' || currentModello.fields === 'FISSO_PERC');
