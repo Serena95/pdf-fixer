@@ -4,6 +4,13 @@ import { usePreventivi, useAddPreventivo } from '@/hooks/usePreventivi';
 import { unitConfig, unitOptions, calcTotal, type Modello } from '@/lib/unitConfig';
 import { generatePDF } from '@/lib/pdfGenerator';
 import { toast } from 'sonner';
+import { format } from 'date-fns';
+import { it } from 'date-fns/locale';
+import { CalendarIcon } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import logoImg from '@/assets/logo.jpg';
 import type { ClientePreload } from '@/pages/Index';
 
