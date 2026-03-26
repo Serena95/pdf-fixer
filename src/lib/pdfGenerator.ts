@@ -51,15 +51,17 @@ export function generatePDF(data: PdfData) {
   doc.setFont('helvetica', 'normal');
   doc.text('infocilentokibs@gmail.com', contactX, 25);
 
-  // Logo (destra)
+  // Logo (destra) – alta qualità, proporzioni originali
   if (data.logoBase64) {
     try {
-      const img = new Image();
-      img.src = data.logoBase64;
-      const ratio = img.naturalWidth / img.naturalHeight || 2.2;
-      const logoH = 14;
-      const logoW = logoH * ratio;
-      doc.addImage(data.logoBase64, 'JPEG', W - marginR - logoW, 14, logoW, logoH);
+      // Aspect ratio originale: 944x169 ≈ 5.59
+      const logoRatio = 5.59;
+      const logoW = 50; // ~50mm di larghezza per nitidezza
+      const logoH = logoW / logoRatio;
+      const logoX = W - marginR - logoW;
+      const logoY = 14;
+      const format = data.logoBase64.includes('image/png') ? 'PNG' : 'JPEG';
+      doc.addImage(data.logoBase64, format, logoX, logoY, logoW, logoH);
     } catch (e) {
       console.warn('Errore caricamento logo nel PDF:', e);
     }

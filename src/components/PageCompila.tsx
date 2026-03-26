@@ -54,7 +54,7 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
       canvas.height = img.height;
       const ctx = canvas.getContext('2d');
       ctx?.drawImage(img, 0, 0);
-      setLogoBase64(canvas.toDataURL('image/jpeg'));
+      setLogoBase64(canvas.toDataURL('image/png'));
     };
     img.src = logoImg;
   }, []);
