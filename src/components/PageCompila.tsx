@@ -32,6 +32,7 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
   const [v3, setV3] = useState(0);
   const [vQty, setVQty] = useState(1);
   const [descServizio, setDescServizio] = useState('');
+  const [tipoUnita, setTipoUnita] = useState<'Ore' | 'Giornate'>('Ore');
   const [ivaCheck, setIvaCheck] = useState(false);
   const [logoBase64, setLogoBase64] = useState('');
 
