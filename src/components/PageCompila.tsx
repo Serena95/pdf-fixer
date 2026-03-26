@@ -121,11 +121,14 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
 
     // Calc qty and unit price for PDF
     let pdfQty = vQty;
-    let pdfUnitPrice = imponibile / vQty;
-    if (currentModello.fields === 'CANONE' || currentModello.fields === 'PACCHETTO') {
+    let pdfUnitPrice = imponibile / (vQty || 1);
+    if (isGeneral) {
+      pdfQty = 1;
+      pdfUnitPrice = v1;
+    } else if (currentModello?.fields === 'CANONE' || currentModello?.fields === 'PACCHETTO') {
       pdfQty = v2 || 1;
       pdfUnitPrice = v1;
-    } else if (currentModello.fields === 'MIX') {
+    } else if (currentModello?.fields === 'MIX') {
       pdfQty = 1;
       pdfUnitPrice = imponibile;
     }
