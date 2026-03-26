@@ -19,7 +19,7 @@ export const unitConfig: Record<string, UnitConfig> = {
     border: '#004a99',
     modelli: [
       { nome: 'Pagamento SOLO FISSO', fields: 'FISSO', label: 'Importo Fisso (€) *' },
-      { nome: 'Fee fissa + % su deliberato', fields: 'FISSO_PERC', label1: 'Fee Ingresso (€) *', label2: '% Success Fee', label3: 'Valore Su Deliberato (€) *' },
+      { nome: 'Fee fissa + % su deliberato', fields: 'FISSO_PERC', label1: 'Fee Ingresso (€) *', label2: 'Percentuale su Deliberato (%) *' },
     ],
   },
   'CK-02': {
