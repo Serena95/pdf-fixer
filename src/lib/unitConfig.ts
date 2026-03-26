@@ -5,6 +5,7 @@ export interface Modello {
   label1?: string;
   label2?: string;
   label3?: string;
+  hasTipoUnita?: boolean;
 }
 
 export interface UnitConfig {
