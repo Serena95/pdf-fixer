@@ -46,9 +46,9 @@ export const unitConfig: Record<string, UnitConfig> = {
     bg: '#f3e5f5',
     border: '#7b1fa2',
     modelli: [
-      { nome: 'Canone Mensile', fields: 'CANONE', label: 'Importo Mensile (€) *', label2: 'Mesi' },
-      { nome: 'Campagna Una Tantum', fields: 'FISSO', label: 'Importo Campagna (€) *' },
-      { nome: 'Mix (Setup + Canone)', fields: 'MIX', label: 'Setup Fee (€) *', label2: 'Canone Mensile (€) *', label3: 'Mesi' },
+      { nome: 'Canone Mensile', fields: 'CANONE', label: 'Importo Canone Mensile (€) *', label2: 'Durata (Mesi) *', hasDataInizio: true },
+      { nome: 'Campagna Una Tantum', fields: 'CAMPAGNA', label: 'Importo Totale Campagna (€) *', label2: 'Numero Tranche' },
+      { nome: 'Mix (Setup + Canone)', fields: 'MIX', label: 'Setup Fee (€)', label2: 'Importo Canone Mensile (€)' },
     ],
   },
   'CK-05': {
