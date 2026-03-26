@@ -37,7 +37,7 @@ export const unitConfig: Record<string, UnitConfig> = {
     border: '#ef6c00',
     modelli: [
       { nome: 'Solo Fisso', fields: 'FISSO', label: 'Importo Fisso (€) *' },
-      { nome: 'Pacchetto Ore/Giornate', fields: 'PACCHETTO', label: 'Costo Unitario (€) *', label2: 'Quantità Ore/Giorni' },
+      { nome: 'Pacchetto Ore/Giornate', fields: 'PACCHETTO', label: 'Numero Ore *', label2: 'Costo Orario (€/ora) *', hasTipoUnita: true },
       { nome: 'Retainer Mensile', fields: 'CANONE', label: 'Importo Retainer Mensile (€) *', label2: 'Mesi' },
     ],
   },
