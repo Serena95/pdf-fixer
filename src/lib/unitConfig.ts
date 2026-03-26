@@ -62,8 +62,8 @@ export const unitConfig: Record<string, UnitConfig> = {
 
 export const unitOptions = [
   { value: 'CK-01 FIN - Finanza Agevolata', label: 'CK-01 FIN - Finanza Agevolata' },
-  { value: 'CK-02 DIGITALE', label: 'CK-02 DIGITALE' },
-  { value: 'CK-03 CONSULENZA', label: 'CK-03 CONSULENZA' },
+  { value: 'CK-02 DIG - Servizi Digitali', label: 'CK-02 DIG - Servizi Digitali' },
+  { value: 'CK-03 CONS - Consulenze', label: 'CK-03 CONS - Consulenze' },
   { value: 'CK-04 MARKETING', label: 'CK-04 MARKETING' },
   { value: 'CK-05 PRODOTTI', label: 'CK-05 PRODOTTI' },
 ];
