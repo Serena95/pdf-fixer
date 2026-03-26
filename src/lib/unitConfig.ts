@@ -16,6 +16,13 @@ export interface UnitConfig {
 }
 
 export const unitConfig: Record<string, UnitConfig> = {
+  'CK-00': {
+    bg: '#fafafa',
+    border: '#9e9e9e',
+    modelli: [
+      { nome: 'Libero', fields: 'FISSO', label: 'Importo (€)' },
+    ],
+  },
   'CK-01': {
     bg: '#e3f2fd',
     border: '#004a99',
@@ -62,11 +69,12 @@ export const unitConfig: Record<string, UnitConfig> = {
 };
 
 export const unitOptions = [
+  { value: 'CK-00 GEN - Generale', label: 'CK-00 GEN - Generale' },
   { value: 'CK-01 FIN - Finanza Agevolata', label: 'CK-01 FIN - Finanza Agevolata' },
   { value: 'CK-02 DIG - Servizi Digitali', label: 'CK-02 DIG - Servizi Digitali' },
   { value: 'CK-03 CONS - Consulenze', label: 'CK-03 CONS - Consulenze' },
   { value: 'CK-04 MKT - Comunicazione e Marketing', label: 'CK-04 MKT - Comunicazione e Marketing' },
-  { value: 'CK-05 PRODOTTI', label: 'CK-05 PRODOTTI' },
+  { value: 'CK-05 PRO - Servizi alle imprese / Prodotti / Convenzioni', label: 'CK-05 PRO - Servizi alle imprese / Prodotti / Convenzioni' },
 ];
 
 export function calcTotal(
