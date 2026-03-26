@@ -102,6 +102,7 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
   const handleModelloChange = (val: string) => {
     setModelloIdx(val);
     setV1(0); setV2(0); setV3(0); setVQty(1);
+    setTipoUnita('Ore');
   };
 
   const handleGenerateAndSave = async () => {
