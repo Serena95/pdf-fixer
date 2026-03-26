@@ -1,11 +1,12 @@
 export interface Modello {
   nome: string;
-  fields: 'FISSO' | 'FISSO_PERC' | 'CANONE' | 'PACCHETTO' | 'MIX';
+  fields: 'FISSO' | 'FISSO_PERC' | 'CANONE' | 'PACCHETTO' | 'MIX' | 'CAMPAGNA';
   label?: string;
   label1?: string;
   label2?: string;
   label3?: string;
   hasTipoUnita?: boolean;
+  hasDataInizio?: boolean;
 }
 
 export interface UnitConfig {
