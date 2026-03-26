@@ -95,10 +95,11 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
 
   const unitKey = unitValue.split(' ')[0];
   const currentConfig = unitKey ? unitConfig[unitKey] : null;
+  const isGeneral = unitKey === 'CK-00';
   const currentModello: Modello | null =
     currentConfig && modelloIdx !== '' ? currentConfig.modelli[parseInt(modelloIdx)] : null;
 
-  const imponibile = currentModello ? calcTotal(currentModello.fields, v1, v2, v3, vQty) : 0;
+  const imponibile = isGeneral ? v1 : (currentModello ? calcTotal(currentModello.fields, v1, v2, v3, vQty) : 0);
   const totale = ivaCheck ? imponibile * 1.22 : imponibile;
 
   const handleUnitChange = (val: string) => {
