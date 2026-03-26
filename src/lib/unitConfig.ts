@@ -16,6 +16,13 @@ export interface UnitConfig {
 }
 
 export const unitConfig: Record<string, UnitConfig> = {
+  'CK-00': {
+    bg: '#fafafa',
+    border: '#9e9e9e',
+    modelli: [
+      { nome: 'Libero', fields: 'FISSO', label: 'Importo (€)' },
+    ],
+  },
   'CK-01': {
     bg: '#e3f2fd',
     border: '#004a99',
