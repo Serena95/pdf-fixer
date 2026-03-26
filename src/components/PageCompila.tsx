@@ -326,15 +326,32 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
                 />
               </div>
             )}
-            {currentModello.label3 && (
+            {currentModello.hasDataInizio && (
               <div>
-                <span className="text-[13px] font-bold text-gray-600">{currentModello.label3}</span>
-                <input
-                  type="number"
-                  value={v3 || ''}
-                  onChange={(e) => setV3(parseFloat(e.target.value) || 0)}
-                  className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm"
-                />
+                <span className="text-[13px] font-bold text-gray-600">Data Inizio</span>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className={cn(
+                        "mt-1 w-full justify-start text-left font-normal",
+                        !dataInizio && "text-muted-foreground"
+                      )}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {dataInizio ? format(dataInizio, 'dd/MM/yyyy', { locale: it }) : 'Seleziona data'}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={dataInizio}
+                      onSelect={setDataInizio}
+                      initialFocus
+                      className={cn("p-3 pointer-events-auto")}
+                    />
+                  </PopoverContent>
+                </Popover>
               </div>
             )}
             {showQty && (
