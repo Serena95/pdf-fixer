@@ -167,7 +167,7 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
         totale,
         data: docDate,
         unit: unitValue,
-        modello: currentModello.nome,
+        modello: isGeneral ? 'Generale' : currentModello!.nome,
         descrizione: descServizio,
         imponibile,
         iva_applicata: ivaCheck,
