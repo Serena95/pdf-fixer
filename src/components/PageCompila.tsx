@@ -117,7 +117,7 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
 
   const handleGenerateAndSave = async () => {
     if (!cName) return toast.error('Inserisci il nome del cliente!');
-    if (!currentModello) return toast.error('Seleziona un modello!');
+    if (!isGeneral && !currentModello) return toast.error('Seleziona un modello!');
 
     // Calc qty and unit price for PDF
     let pdfQty = vQty;
