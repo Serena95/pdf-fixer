@@ -274,19 +274,36 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
           </select>
         </div>
 
-        <div className="mb-3 flex items-center gap-2.5">
-          <span className="w-[140px] text-[13px] font-bold text-gray-600">Modello:</span>
-          <select
-            value={modelloIdx}
-            onChange={(e) => handleModelloChange(e.target.value)}
-            className="w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm"
-          >
-            <option value="">-- Seleziona Modello --</option>
-            {currentConfig?.modelli.map((m, i) => (
-              <option key={i} value={i}>{m.nome}</option>
-            ))}
-          </select>
-        </div>
+        {!isGeneral && (
+          <div className="mb-3 flex items-center gap-2.5">
+            <span className="w-[140px] text-[13px] font-bold text-gray-600">Modello:</span>
+            <select
+              value={modelloIdx}
+              onChange={(e) => handleModelloChange(e.target.value)}
+              className="w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm"
+            >
+              <option value="">-- Seleziona Modello --</option>
+              {currentConfig?.modelli.map((m, i) => (
+                <option key={i} value={i}>{m.nome}</option>
+              ))}
+            </select>
+          </div>
+        )}
+
+        {/* Free-form fields for CK-00 */}
+        {isGeneral && (
+          <div className="mt-4">
+            <div>
+              <span className="text-[13px] font-bold text-gray-600">Importo (€)</span>
+              <input
+                type="number"
+                value={v1 || ''}
+                onChange={(e) => setV1(parseFloat(e.target.value) || 0)}
+                className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm"
+              />
+            </div>
+          </div>
+        )}
 
         {/* Dynamic fields */}
         {currentModello && (
