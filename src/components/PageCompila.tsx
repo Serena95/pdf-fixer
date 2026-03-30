@@ -186,11 +186,15 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
   };
 
   const handleReset = () => {
+    setSelectedClient('');
     setCName(''); setCAddr(''); setCPiva(''); setCEmail('');
+    setDocDate(new Date().toISOString().split('T')[0]);
     setUnitValue(''); setModelloIdx('');
     setV1(0); setV2(0); setV3(0); setVQty(1);
-    setDescServizio(''); setIvaCheck(false); setSelectedClient('');
+    setDescServizio('');
+    setTipoUnita('Ore');
     setDataInizio(undefined);
+    setIvaCheck(false);
   };
 
   const showQty = currentModello && (currentModello.fields === 'FISSO' || currentModello.fields === 'FISSO_PERC');
