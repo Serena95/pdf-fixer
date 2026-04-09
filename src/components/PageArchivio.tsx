@@ -1,19 +1,21 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { usePreventivi, useDeletePreventivo, Preventivo } from '@/hooks/usePreventivi';
+import { useClienti } from '@/hooks/useClienti';
 import { toast } from 'sonner';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { unitConfig } from '@/lib/unitConfig';
+import { generatePDF } from '@/lib/pdfGenerator';
+import logoImg from '@/assets/logo.png';
 
 function getUnitSubtitle(unit: string | null): string {
   if (!unit) return 'Senza Unit';
-  // e.g. "CK-02 DIG - Servizi Digitali" → "Servizi Digitali"
   const dashIdx = unit.indexOf(' - ');
   return dashIdx !== -1 ? unit.substring(dashIdx + 3) : unit;
 }
 
 function getUnitKey(unit: string | null): string {
   if (!unit) return '';
-  return unit.split(' ')[0]; // e.g. "CK-02"
+  return unit.split(' ')[0];
 }
 
 function formatDate(d: string): string {
@@ -23,8 +25,23 @@ function formatDate(d: string): string {
 
 export default function PageArchivio() {
   const { data: preventivi = [], isLoading } = usePreventivi();
+  const { data: clienti = [] } = useClienti();
   const deletePreventivo = useDeletePreventivo();
   const [selected, setSelected] = useState<Preventivo | null>(null);
+  const [logoBase64, setLogoBase64] = useState('');
+
+  useEffect(() => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      canvas.getContext('2d')!.drawImage(img, 0, 0);
+      setLogoBase64(canvas.toDataURL('image/png'));
+    };
+    img.src = logoImg;
+  }, []);
 
   const handleDelete = async (id: string) => {
     if (!confirm('Eliminare preventivo?')) return;
@@ -34,6 +51,29 @@ export default function PageArchivio() {
     } catch {
       toast.error('Errore eliminazione');
     }
+  };
+
+  const handleDownloadPDF = (p: Preventivo) => {
+    const unitKey = getUnitKey(p.unit);
+    const unitName = getUnitSubtitle(p.unit);
+    const cliente = clienti.find((c) => c.nome === p.cliente);
+
+    generatePDF({
+      clientName: p.cliente,
+      clientAddr: cliente?.indirizzo || '',
+      clientPiva: cliente?.piva || '',
+      docNum: p.numero,
+      docDate: formatDate(p.data),
+      unitCode: unitKey,
+      unitName,
+      description: p.descrizione || '',
+      qty: 1,
+      unitPrice: p.imponibile,
+      imponibile: p.imponibile,
+      ivaApplicata: p.iva_applicata,
+      totale: p.totale,
+      logoBase64,
+    });
   };
 
   const fmt = (n: number) =>
@@ -102,6 +142,12 @@ export default function PageArchivio() {
                       👁 Anteprima
                     </button>
                     <button
+                      onClick={() => handleDownloadPDF(p)}
+                      className="rounded bg-green-600 px-2.5 py-1 text-[11px] font-bold text-white hover:bg-green-700"
+                    >
+                      📥 PDF
+                    </button>
+                    <button
                       onClick={() => handleDelete(p.id)}
                       className="rounded bg-red-500 px-2.5 py-1 text-[11px] font-bold text-white hover:bg-red-600"
                     >
@@ -168,6 +214,13 @@ export default function PageArchivio() {
                   <span className="text-[#004a99]">€ {fmt(selected.totale)}</span>
                 </div>
               </div>
+
+              <button
+                onClick={() => handleDownloadPDF(selected)}
+                className="w-full rounded bg-green-600 px-4 py-2 text-sm font-bold text-white hover:bg-green-700"
+              >
+                📥 Scarica PDF
+              </button>
             </div>
           )}
         </DialogContent>
