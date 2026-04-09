@@ -1,8 +1,11 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { usePreventivi, useDeletePreventivo, Preventivo } from '@/hooks/usePreventivi';
+import { useClienti } from '@/hooks/useClienti';
 import { toast } from 'sonner';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { unitConfig } from '@/lib/unitConfig';
+import { generatePDF } from '@/lib/pdfGenerator';
+import logoImg from '@/assets/logo.png';
 
 function getUnitSubtitle(unit: string | null): string {
   if (!unit) return 'Senza Unit';
