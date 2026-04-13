@@ -89,7 +89,15 @@ export function generatePDF(data: PdfData) {
 
   // === TABELLA ===
   y = 95;
-  const colX = [marginL, marginL + 30, marginL + 55, marginL + contentW - 50, marginL + contentW - 15];
+  // Colonne: Servizio 30%, Descrizione 40%, Q.tà 10%, Prezzo 20%
+  const col1X = marginL;                          // Servizio start
+  const col1W = contentW * 0.30;                  // Servizio width
+  const col2X = marginL + col1W;                  // Descrizione start
+  const col2W = contentW * 0.40;                  // Descrizione width
+  const col3X = marginL + col1W + col2W;          // Q.tà start
+  const col3W = contentW * 0.10;                  // Q.tà width
+  const col4X = marginL + col1W + col2W + col3W;  // Prezzo start
+  const col4W = contentW * 0.20;                  // Prezzo width
 
   // Header tabella
   doc.setDrawColor(0);
@@ -98,46 +106,65 @@ export function generatePDF(data: PdfData) {
   y += 5;
   doc.setFontSize(8);
   doc.setFont('helvetica', 'bold');
-  doc.text('', colX[0], y);
-  doc.text('Servizio', colX[1], y);
-  doc.text('Descrizione', colX[2], y);
-  doc.text('Q.ta', colX[3], y);
-  doc.text('Prezzo unitario', colX[4] - 5, y);
+  doc.text('Servizio', col1X + 2, y);
+  doc.text('Descrizione', col2X + 2, y);
+  doc.text('Q.tà', col3X + 2, y);
+  doc.text('Prezzo unitario', col4X + 2, y);
   y += 2;
   doc.line(marginL, y, marginL + contentW, y);
 
   // Linee verticali header
-  doc.line(colX[1] - 2, y - 7, colX[1] - 2, y);
-  doc.line(colX[2] - 2, y - 7, colX[2] - 2, y);
-  doc.line(colX[3] - 2, y - 7, colX[3] - 2, y);
-  doc.line(colX[4] - 7, y - 7, colX[4] - 7, y);
+  const headerTop = y - 7;
+  doc.line(col2X, headerTop, col2X, y);
+  doc.line(col3X, headerTop, col3X, y);
+  doc.line(col4X, headerTop, col4X, y);
 
-  // Riga dati
-  y += 8;
+  // === RIGA DATI ===
+  y += 4;
+  const rowStartY = y;
+
+  // --- Colonna Servizio: codice (bold) + nome (bold), multiline ---
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(12);
-  doc.text(data.unitCode, marginL + 2, y);
+  doc.setFontSize(7);
+  const svcCodeLines = doc.splitTextToSize(data.unitCode, col1W - 4);
+  doc.text(svcCodeLines, col1X + 2, y);
+  const codeH = svcCodeLines.length * 3.5;
 
   doc.setFontSize(8);
-  doc.text(data.unitName, colX[1], y);
+  const svcNameLines = doc.splitTextToSize(data.unitName, col1W - 4);
+  doc.text(svcNameLines, col1X + 2, y + codeH + 1);
+  const nameH = svcNameLines.length * 3.5;
+  const svcColH = codeH + 1 + nameH;
 
+  // --- Colonna Descrizione: testo multiline con line spacing 1.2 ---
   doc.setFont('helvetica', 'normal');
+  doc.setFontSize(8);
+  const descMaxW = col2W - 4;
+  const descLines = doc.splitTextToSize(data.description, descMaxW);
+  const lineH = 3.5 * 1.2; // line spacing 1.2
+  descLines.forEach((line: string, i: number) => {
+    doc.text(line, col2X + 2, y + i * lineH);
+  });
+  const descColH = descLines.length * lineH;
+
+  // --- Colonna Q.tà ---
   doc.setFontSize(9);
+  doc.text(String(data.qty), col3X + (col3W / 2), y, { align: 'center' });
 
-  // Descrizione (multiline)
-  const descLines = doc.splitTextToSize(data.description, contentW - 55 - 50);
-  doc.text(descLines, colX[2], y);
-  const descHeight = descLines.length * 4.5;
+  // --- Colonna Prezzo ---
+  doc.text('€ ' + fmt(data.unitPrice), col4X + col4W - 2, y, { align: 'right' });
 
-  doc.text(String(data.qty), colX[3] + 5, y);
-  doc.text('€ ' + fmt(data.unitPrice), colX[4] - 5, y);
+  // Calcolo altezza riga
+  const rowContentH = Math.max(svcColH, descColH, 8);
+  const rowBottom = rowStartY + rowContentH + 2;
 
   // Linee verticali riga
-  const rowBottom = y + Math.max(descHeight, 8);
-  doc.line(colX[1] - 2, y - 6, colX[1] - 2, rowBottom);
-  doc.line(colX[2] - 2, y - 6, colX[2] - 2, rowBottom);
-  doc.line(colX[3] - 2, y - 6, colX[3] - 2, rowBottom);
-  doc.line(colX[4] - 7, y - 6, colX[4] - 7, rowBottom);
+  doc.line(col2X, rowStartY - 4, col2X, rowBottom);
+  doc.line(col3X, rowStartY - 4, col3X, rowBottom);
+  doc.line(col4X, rowStartY - 4, col4X, rowBottom);
+
+  // Linea chiusura riga
+  doc.line(marginL, rowBottom, marginL + contentW, rowBottom);
 
   // === RIEPILOGO ===
   y = rowBottom + 5;
