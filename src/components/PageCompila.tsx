@@ -43,6 +43,8 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
   const [dataInizio, setDataInizio] = useState<Date | undefined>(undefined);
   const [ivaCheck, setIvaCheck] = useState(false);
   const [logoBase64, setLogoBase64] = useState('');
+  // CATALOGO_FIN: importo deliberato for success fee calculation
+  const [importoDeliberato, setImportoDeliberato] = useState(0);
 
   // Load logo as base64
   useEffect(() => {
@@ -99,13 +101,26 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
   const currentModello: Modello | null =
     currentConfig && modelloIdx !== '' ? currentConfig.modelli[parseInt(modelloIdx)] : null;
 
-  const imponibile = isGeneral ? v1 : (currentModello ? calcTotal(currentModello.fields, v1, v2, v3, vQty) : 0);
+  const isCatalogoFin = currentModello?.fields === 'CATALOGO_FIN';
+
+  // Calculate imponibile
+  let imponibile = 0;
+  if (isGeneral) {
+    imponibile = v1;
+  } else if (isCatalogoFin && currentModello) {
+    const fisso = (currentModello.compensoFisso || 0) + (currentModello.compensoFisso2 || 0);
+    const successFee = importoDeliberato * (currentModello.successFeePerc || 0) / 100;
+    imponibile = fisso + successFee;
+  } else if (currentModello) {
+    imponibile = calcTotal(currentModello.fields, v1, v2, v3, vQty);
+  }
   const totale = ivaCheck ? imponibile * 1.22 : imponibile;
 
   const handleUnitChange = (val: string) => {
     setUnitValue(val);
     setModelloIdx('');
     setV1(0); setV2(0); setV3(0); setVQty(1);
+    setImportoDeliberato(0);
   };
 
   const handleModelloChange = (val: string) => {
@@ -113,7 +128,19 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
     setV1(0); setV2(0); setV3(0); setVQty(1);
     setTipoUnita('Ore');
     setDataInizio(undefined);
+    setImportoDeliberato(0);
+    // Pre-fill description for CATALOGO_FIN
+    const key = unitValue.split(' ')[0];
+    const cfg = key ? unitConfig[key] : null;
+    const mod = cfg && val !== '' ? cfg.modelli[parseInt(val)] : null;
+    if (mod?.fields === 'CATALOGO_FIN' && mod.descrizioneOperativa) {
+      setDescServizio(mod.descrizioneOperativa);
+    } else {
+      setDescServizio('');
+    }
   };
+
+  const fmtEur = (n: number) => n.toLocaleString('it-IT', { minimumFractionDigits: 2 });
 
   const handleGenerateAndSave = async () => {
     if (!cName) return toast.error('Inserisci il nome del cliente!');
@@ -125,6 +152,9 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
     if (isGeneral) {
       pdfQty = 1;
       pdfUnitPrice = v1;
+    } else if (isCatalogoFin) {
+      pdfQty = 1;
+      pdfUnitPrice = imponibile;
     } else if (currentModello?.fields === 'CANONE' || currentModello?.fields === 'PACCHETTO') {
       pdfQty = v2 || 1;
       pdfUnitPrice = v1;
@@ -135,6 +165,16 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
 
     const dateFormatted = new Date(docDate).toLocaleDateString('it-IT');
 
+    // Build description with payment phases for CATALOGO_FIN
+    let pdfDescription = descServizio;
+    if (isCatalogoFin && currentModello) {
+      const phases = currentModello.fasiPagamento || [];
+      const successFeeAmount = importoDeliberato * (currentModello.successFeePerc || 0) / 100;
+      pdfDescription = descServizio + '\n\nFasi di pagamento:\n' +
+        phases.map(p => '• ' + p).join('\n') +
+        (importoDeliberato > 0 ? `\n\nImporto deliberato: € ${fmtEur(importoDeliberato)}\nSuccess fee (${currentModello.successFeePerc}%): € ${fmtEur(successFeeAmount)}` : '');
+    }
+
     // Generate PDF
     generatePDF({
       clientName: cName,
@@ -144,7 +184,7 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
       docDate: dateFormatted,
       unitCode: unitKey,
       unitName: unitValue.split(' ').slice(1).join(' '),
-      description: descServizio,
+      description: pdfDescription,
       qty: pdfQty,
       unitPrice: pdfUnitPrice,
       imponibile,
@@ -155,12 +195,10 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
 
     // Save to DB
     try {
-      // Save client
       if (!clienti.some((c) => c.nome === cName)) {
         await addCliente.mutateAsync({ nome: cName, indirizzo: cAddr, piva: cPiva, email: cEmail });
       }
 
-      // Save preventivo
       await addPreventivo.mutateAsync({
         numero: docNum,
         cliente: cName,
@@ -195,6 +233,7 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
     setTipoUnita('Ore');
     setDataInizio(undefined);
     setIvaCheck(false);
+    setImportoDeliberato(0);
   };
 
   const showQty = currentModello && (currentModello.fields === 'FISSO' || currentModello.fields === 'FISSO_PERC');
@@ -280,13 +319,15 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
 
         {!isGeneral && (
           <div className="mb-3 flex items-center gap-2.5">
-            <span className="w-[140px] text-[13px] font-bold text-gray-600">Modello:</span>
+            <span className="w-[140px] text-[13px] font-bold text-gray-600">
+              {unitKey === 'CK-01' ? 'Prodotto:' : 'Modello:'}
+            </span>
             <select
               value={modelloIdx}
               onChange={(e) => handleModelloChange(e.target.value)}
               className="w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm"
             >
-              <option value="">-- Seleziona Modello --</option>
+              <option value="">{unitKey === 'CK-01' ? '-- Seleziona Prodotto --' : '-- Seleziona Modello --'}</option>
               {currentConfig?.modelli.map((m, i) => (
                 <option key={i} value={i}>{m.nome}</option>
               ))}
@@ -309,8 +350,88 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
           </div>
         )}
 
-        {/* Dynamic fields */}
-        {currentModello && (
+        {/* CATALOGO_FIN: fixed-price product display */}
+        {isCatalogoFin && currentModello && (
+          <div className="mt-4 space-y-4">
+            {/* Product code */}
+            <div className="rounded-md bg-white/60 p-3">
+              <span className="text-[11px] font-medium text-gray-500">Codice Prodotto</span>
+              <p className="text-sm font-bold text-gray-800">{currentModello.codice}</p>
+            </div>
+
+            {/* Fixed fees - read only */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <span className="text-[13px] font-bold text-gray-600">Compenso Fisso (€)</span>
+                <input
+                  type="text"
+                  value={`€ ${fmtEur(currentModello.compensoFisso || 0)}`}
+                  readOnly
+                  className="mt-1 w-full rounded-md border border-gray-300 bg-gray-100 px-3 py-2.5 text-sm font-semibold text-gray-700 cursor-not-allowed"
+                />
+                <span className="text-[11px] text-gray-500">Alla conferma incarico</span>
+              </div>
+              {currentModello.compensoFisso2 != null && (
+                <div>
+                  <span className="text-[13px] font-bold text-gray-600">Fase 2 (€)</span>
+                  <input
+                    type="text"
+                    value={`€ ${fmtEur(currentModello.compensoFisso2)}`}
+                    readOnly
+                    className="mt-1 w-full rounded-md border border-gray-300 bg-gray-100 px-3 py-2.5 text-sm font-semibold text-gray-700 cursor-not-allowed"
+                  />
+                  <span className="text-[11px] text-gray-500">{currentModello.compensoFisso2Label || 'Alla comunicazione di ammissione'}</span>
+                </div>
+              )}
+            </div>
+
+            {/* Success fee - read only percentage */}
+            <div>
+              <span className="text-[13px] font-bold text-gray-600">Success Fee</span>
+              <input
+                type="text"
+                value={`${currentModello.successFeePerc}% su importo deliberato/finanziato`}
+                readOnly
+                className="mt-1 w-full rounded-md border border-gray-300 bg-gray-100 px-3 py-2.5 text-sm font-semibold text-gray-700 cursor-not-allowed"
+              />
+            </div>
+
+            {/* Importo deliberato - user input */}
+            <div className="rounded-md border-2 border-blue-300 bg-blue-50 p-4">
+              <span className="text-[13px] font-bold text-blue-800">Importo Deliberato / Finanziato (€) *</span>
+              <input
+                type="number"
+                value={importoDeliberato || ''}
+                onChange={(e) => setImportoDeliberato(parseFloat(e.target.value) || 0)}
+                placeholder="Inserisci l'importo deliberato..."
+                className="mt-1 w-full rounded-md border border-blue-300 px-3 py-2.5 text-sm"
+              />
+              {importoDeliberato > 0 && (
+                <p className="mt-2 text-sm text-blue-700">
+                  Success fee ({currentModello.successFeePerc}%): <strong>€ {fmtEur(importoDeliberato * (currentModello.successFeePerc || 0) / 100)}</strong>
+                </p>
+              )}
+            </div>
+
+            {/* Payment phases */}
+            {currentModello.fasiPagamento && currentModello.fasiPagamento.length > 0 && (
+              <div className="rounded-md bg-white/60 p-3">
+                <span className="text-[11px] font-medium text-gray-500 uppercase tracking-wider">Fasi di Pagamento</span>
+                <ul className="mt-1 space-y-1">
+                  {currentModello.fasiPagamento.map((fase, i) => (
+                    <li key={i} className="flex items-start gap-2 text-sm text-gray-700">
+                      <span className="mt-0.5 text-blue-500">•</span>
+                      {fase}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Dynamic fields for non-CATALOGO_FIN */}
+        {currentModello && !isCatalogoFin && (
           <div className="mt-4 grid grid-cols-2 gap-4">
             {currentModello.hasTipoUnita && (
               <div className="col-span-2">
@@ -422,6 +543,17 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
             {ivaCheck ? 'SI' : 'NO'}
           </span>
         </div>
+
+        {/* Detailed breakdown for CATALOGO_FIN */}
+        {isCatalogoFin && currentModello && (
+          <div className="mb-4 text-right text-sm text-gray-600">
+            <p>Compenso fisso: € {fmtEur((currentModello.compensoFisso || 0) + (currentModello.compensoFisso2 || 0))}</p>
+            {importoDeliberato > 0 && (
+              <p>Success fee ({currentModello.successFeePerc}%): € {fmtEur(importoDeliberato * (currentModello.successFeePerc || 0) / 100)}</p>
+            )}
+          </div>
+        )}
+
         <span className="text-[28px] font-bold text-[#004a99]">
           TOTALE: € {totale.toLocaleString('it-IT', { minimumFractionDigits: 2 })}
         </span>
