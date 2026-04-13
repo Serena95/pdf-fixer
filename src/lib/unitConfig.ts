@@ -1,12 +1,20 @@
 export interface Modello {
   nome: string;
-  fields: 'FISSO' | 'FISSO_PERC' | 'CANONE' | 'PACCHETTO' | 'MIX' | 'CAMPAGNA';
+  fields: 'FISSO' | 'FISSO_PERC' | 'CANONE' | 'PACCHETTO' | 'MIX' | 'CAMPAGNA' | 'CATALOGO_FIN';
   label?: string;
   label1?: string;
   label2?: string;
   label3?: string;
   hasTipoUnita?: boolean;
   hasDataInizio?: boolean;
+  // CATALOGO_FIN specific
+  codice?: string;
+  compensoFisso?: number;
+  compensoFisso2?: number;
+  compensoFisso2Label?: string;
+  successFeePerc?: number;
+  descrizioneOperativa?: string;
+  fasiPagamento?: string[];
 }
 
 export interface UnitConfig {
@@ -25,8 +33,71 @@ export const unitConfig: Record<string, UnitConfig> = {
     bg: '#e3f2fd',
     border: '#004a99',
     modelli: [
-      { nome: 'Pagamento SOLO FISSO', fields: 'FISSO', label: 'Importo Fisso (€) *' },
-      { nome: 'Fee fissa + % su deliberato', fields: 'FISSO_PERC', label1: 'Fee Ingresso (€) *', label2: 'Percentuale su Deliberato (%) *' },
+      {
+        nome: 'Resto al Sud 2.0',
+        fields: 'CATALOGO_FIN',
+        codice: 'CK-01-FIN-PRD-Resto al Sud 2.0',
+        compensoFisso: 1000,
+        successFeePerc: 7,
+        descrizioneOperativa: 'Assistenza tecnica per l\'intero iter Resto al Sud 2.0 dalla predisposizione della domanda alla rendicontazione.',
+        fasiPagamento: ['€ 1.000,00 alla conferma incarico', '7% success fee su importo finanziato'],
+      },
+      {
+        nome: 'Smart&Start Italia',
+        fields: 'CATALOGO_FIN',
+        codice: 'CK-01-FIN-PRD-Smart&Start Italia',
+        compensoFisso: 2500,
+        successFeePerc: 7,
+        descrizioneOperativa: 'Assistenza tecnica per l\'intero iter Smart&Start Italia dalla predisposizione della domanda alla rendicontazione.',
+        fasiPagamento: ['€ 2.500,00 alla conferma incarico', '7% success fee su importo finanziato'],
+      },
+      {
+        nome: 'SIMEST',
+        fields: 'CATALOGO_FIN',
+        codice: 'CK-01-FIN-PRD-Simest',
+        compensoFisso: 1500,
+        successFeePerc: 7,
+        descrizioneOperativa: 'Assistenza tecnica per l\'intero iter SIMEST dalla predisposizione della domanda alla rendicontazione.',
+        fasiPagamento: ['€ 1.500,00 alla conferma incarico', '7% success fee su importo finanziato'],
+      },
+      {
+        nome: 'ON – Oltre Nuove Imprese a Tasso Zero',
+        fields: 'CATALOGO_FIN',
+        codice: 'CK-01-FIN-PRD-ON',
+        compensoFisso: 2500,
+        successFeePerc: 7,
+        descrizioneOperativa: 'Assistenza tecnica per l\'intero iter ON – Oltre Nuove Imprese a Tasso Zero dalla predisposizione della domanda alla rendicontazione.',
+        fasiPagamento: ['€ 2.500,00 alla conferma incarico', '7% success fee su importo finanziato'],
+      },
+      {
+        nome: 'Italia Economia Sociale',
+        fields: 'CATALOGO_FIN',
+        codice: 'CK-01-FIN-PRD-Italia Economia Sociale',
+        compensoFisso: 2500,
+        successFeePerc: 7,
+        descrizioneOperativa: 'Assistenza tecnica per l\'intero iter Italia Economia Sociale dalla predisposizione della domanda alla rendicontazione.',
+        fasiPagamento: ['€ 2.500,00 alla conferma incarico', '7% success fee su importo finanziato'],
+      },
+      {
+        nome: 'Bando Imprese Sud MASE',
+        fields: 'CATALOGO_FIN',
+        codice: 'CK-01-FIN-PRD_BANDO IMPRESE SUD_MASE',
+        compensoFisso: 2500,
+        successFeePerc: 7,
+        descrizioneOperativa: 'Assistenza tecnica per l\'intero iter del Bando Imprese Sud dalla predisposizione della domanda fino alla presentazione degli allegati e approvazione.',
+        fasiPagamento: ['€ 2.500,00 al conferimento incarico', '7% success fee su importo deliberato'],
+      },
+      {
+        nome: 'Bando ISI INAIL 2026',
+        fields: 'CATALOGO_FIN',
+        codice: 'CK-01_FIN_Bando ISI INAIL',
+        compensoFisso: 1500,
+        compensoFisso2: 1000,
+        compensoFisso2Label: 'Alla comunicazione di ammissione',
+        successFeePerc: 7,
+        descrizioneOperativa: 'Assistenza tecnica per l\'intero iter del Bando ISI INAIL 2026 dalla verifica preliminare fino all\'ammissione a finanziamento.',
+        fasiPagamento: ['€ 1.500,00 al conferimento incarico', '€ 1.000,00 alla comunicazione di ammissione', '7% success fee su importo deliberato INAIL'],
+      },
     ],
   },
   'CK-02': {
@@ -87,5 +158,6 @@ export function calcTotal(
   if (fields === 'CANONE' || fields === 'PACCHETTO') return v1 * v2;
   if (fields === 'MIX') return v1 + v2;
   if (fields === 'CAMPAGNA') return v1;
+  // CATALOGO_FIN: calculated separately in PageCompila
   return 0;
 }
