@@ -65,12 +65,17 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
     const img2 = new Image();
     img2.crossOrigin = 'anonymous';
     img2.onload = () => {
+      // Crop whitespace: content is roughly 15%-85% x, 25%-85% y
+      const sx = Math.floor(img2.width * 0.18);
+      const sy = Math.floor(img2.height * 0.28);
+      const sw = Math.floor(img2.width * 0.64);
+      const sh = Math.floor(img2.height * 0.57);
       const canvas2 = document.createElement('canvas');
-      canvas2.width = img2.width;
-      canvas2.height = img2.height;
+      canvas2.width = sw;
+      canvas2.height = sh;
       const ctx2 = canvas2.getContext('2d');
-      ctx2?.drawImage(img2, 0, 0);
-      setLogo2Base64(canvas2.toDataURL('image/jpeg'));
+      ctx2?.drawImage(img2, sx, sy, sw, sh, 0, 0, sw, sh);
+      setLogo2Base64(canvas2.toDataURL('image/png'));
     };
     img2.src = logo2Img;
   }, []);

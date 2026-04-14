@@ -47,11 +47,15 @@ export default function PageArchivio() {
     const img2 = new Image();
     img2.crossOrigin = 'anonymous';
     img2.onload = () => {
+      const sx = Math.floor(img2.naturalWidth * 0.18);
+      const sy = Math.floor(img2.naturalHeight * 0.28);
+      const sw = Math.floor(img2.naturalWidth * 0.64);
+      const sh = Math.floor(img2.naturalHeight * 0.57);
       const canvas2 = document.createElement('canvas');
-      canvas2.width = img2.naturalWidth;
-      canvas2.height = img2.naturalHeight;
-      canvas2.getContext('2d')!.drawImage(img2, 0, 0);
-      setLogo2Base64(canvas2.toDataURL('image/jpeg'));
+      canvas2.width = sw;
+      canvas2.height = sh;
+      canvas2.getContext('2d')!.drawImage(img2, sx, sy, sw, sh, 0, 0, sw, sh);
+      setLogo2Base64(canvas2.toDataURL('image/png'));
     };
     img2.src = logo2Img;
   }, []);
