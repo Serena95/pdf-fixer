@@ -55,33 +55,33 @@ export function generatePDF(data: PdfData) {
   // Logos area (destra): Sistema Cilento scpa accanto a Cilento Kibs
   const logosRightEdge = W - marginR;
   
-  // Logo Cilento Kibs (destra in alto)
-  if (data.logoBase64) {
+  // Logo Sistema Cilento scpa (in alto a destra)
+  let logoBottomY = 12;
+  if (data.logo2Base64) {
     try {
-      const logoRatio = 5.59;
-      const logoW = 45;
-      const logoH = logoW / logoRatio;
-      const logoX = logosRightEdge - logoW;
-      const logoY = 12;
-      const format = data.logoBase64.includes('image/png') ? 'PNG' : 'JPEG';
-      doc.addImage(data.logoBase64, format, logoX, logoY, logoW, logoH);
+      const logo2H = 20;
+      const logo2W = logo2H * 1.12;
+      const logo2X = logosRightEdge - logo2W;
+      const logo2Y = 10;
+      const format2 = data.logo2Base64.includes('image/png') ? 'PNG' : 'JPEG';
+      doc.addImage(data.logo2Base64, format2, logo2X, logo2Y, logo2W, logo2H);
+      logoBottomY = logo2Y + logo2H + 2;
     } catch (e) {
-      console.warn('Errore caricamento logo Kibs nel PDF:', e);
+      console.warn('Errore caricamento logo Sistema Cilento nel PDF:', e);
     }
   }
 
-  // Logo Sistema Cilento scpa (accanto a sinistra del logo Kibs)
-  if (data.logo2Base64) {
+  // Logo Cilento Kibs (sotto il logo Sistema Cilento)
+  if (data.logoBase64) {
     try {
-      // Logo cropped: aspect ratio ~1.12:1
-      const logo2H = 16;
-      const logo2W = logo2H * 1.12;
-      const logo2X = logosRightEdge - 45 - logo2W - 3;
-      const logo2Y = 11;
-      const format2 = data.logo2Base64.includes('image/png') ? 'PNG' : 'JPEG';
-      doc.addImage(data.logo2Base64, format2, logo2X, logo2Y, logo2W, logo2H);
+      const logoRatio = 5.59;
+      const logoW = 50;
+      const logoH = logoW / logoRatio;
+      const logoX = logosRightEdge - logoW;
+      const format = data.logoBase64.includes('image/png') ? 'PNG' : 'JPEG';
+      doc.addImage(data.logoBase64, format, logoX, logoBottomY, logoW, logoH);
     } catch (e) {
-      console.warn('Errore caricamento logo Sistema Cilento nel PDF:', e);
+      console.warn('Errore caricamento logo Kibs nel PDF:', e);
     }
   }
 
