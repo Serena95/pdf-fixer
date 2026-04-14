@@ -32,7 +32,7 @@ export function generatePDF(data: PdfData) {
   // === HEADER ===
   doc.setFontSize(10);
   doc.setFont('helvetica', 'bold');
-  doc.text('Sistema Cilento-agenzia Locale Di', marginL, y);
+  doc.text('Sistema Cilento-Agenzia Locale di', marginL, y);
   y += 4.5;
   doc.text('Sviluppo Del Cilento S.c.p.a.', marginL, y);
   y += 5;
