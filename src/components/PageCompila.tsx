@@ -61,6 +61,18 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
       setLogoBase64(canvas.toDataURL('image/png'));
     };
     img.src = logoImg;
+
+    const img2 = new Image();
+    img2.crossOrigin = 'anonymous';
+    img2.onload = () => {
+      const canvas2 = document.createElement('canvas');
+      canvas2.width = img2.width;
+      canvas2.height = img2.height;
+      const ctx2 = canvas2.getContext('2d');
+      ctx2?.drawImage(img2, 0, 0);
+      setLogo2Base64(canvas2.toDataURL('image/jpeg'));
+    };
+    img2.src = logo2Img;
   }, []);
 
   // Preload client from Clienti page
