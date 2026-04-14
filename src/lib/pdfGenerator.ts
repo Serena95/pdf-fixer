@@ -73,11 +73,11 @@ export function generatePDF(data: PdfData) {
   // Logo Sistema Cilento scpa (accanto a sinistra del logo Kibs)
   if (data.logo2Base64) {
     try {
-      // Il logo ha whitespace: usiamo dimensioni che lo rendano leggibile
-      const logo2H = 18;
-      const logo2W = 18; // roughly square content
-      const logo2X = logosRightEdge - 45 - logo2W - 3; // 3mm gap from Kibs logo
-      const logo2Y = 10;
+      // Logo cropped: aspect ratio ~1.12:1
+      const logo2H = 16;
+      const logo2W = logo2H * 1.12;
+      const logo2X = logosRightEdge - 45 - logo2W - 3;
+      const logo2Y = 11;
       const format2 = data.logo2Base64.includes('image/png') ? 'PNG' : 'JPEG';
       doc.addImage(data.logo2Base64, format2, logo2X, logo2Y, logo2W, logo2H);
     } catch (e) {
