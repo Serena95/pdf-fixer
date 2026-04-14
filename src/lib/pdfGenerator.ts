@@ -34,7 +34,7 @@ export function generatePDF(data: PdfData) {
   doc.setFont('helvetica', 'bold');
   doc.text('Sistema Cilento-Agenzia Locale di', marginL, y);
   y += 4.5;
-  doc.text('Sviluppo Del Cilento S.c.p.a.', marginL, y);
+  doc.text('Sviluppo del Cilento S.c.p.a.', marginL, y);
   y += 5;
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(9);
@@ -200,7 +200,7 @@ export function generatePDF(data: PdfData) {
   doc.text('Vallo della Lucania, lì ' + data.docDate, marginL, y);
   y += 6;
   doc.setFont('helvetica', 'bold');
-  doc.text('Sistema Cilento-agenzia Locale Di Sviluppo Del Cilento S.c.p.a.', marginL, y);
+  doc.text('Sistema Cilento-Agenzia Locale di Sviluppo del Cilento S.c.p.a.', marginL, y);
   y += 6;
   doc.setFont('helvetica', 'normal');
   doc.text('IBAN: ', marginL, y);
