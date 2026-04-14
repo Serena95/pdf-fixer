@@ -6,6 +6,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { unitConfig } from '@/lib/unitConfig';
 import { generatePDF } from '@/lib/pdfGenerator';
 import logoImg from '@/assets/logo.png';
+import logo2Img from '@/assets/logo_footer_1.jpeg';
 
 function getUnitSubtitle(unit: string | null): string {
   if (!unit) return 'Senza Unit';
@@ -29,6 +30,7 @@ export default function PageArchivio() {
   const deletePreventivo = useDeletePreventivo();
   const [selected, setSelected] = useState<Preventivo | null>(null);
   const [logoBase64, setLogoBase64] = useState('');
+  const [logo2Base64, setLogo2Base64] = useState('');
 
   useEffect(() => {
     const img = new Image();
@@ -41,6 +43,17 @@ export default function PageArchivio() {
       setLogoBase64(canvas.toDataURL('image/png'));
     };
     img.src = logoImg;
+
+    const img2 = new Image();
+    img2.crossOrigin = 'anonymous';
+    img2.onload = () => {
+      const canvas2 = document.createElement('canvas');
+      canvas2.width = img2.naturalWidth;
+      canvas2.height = img2.naturalHeight;
+      canvas2.getContext('2d')!.drawImage(img2, 0, 0);
+      setLogo2Base64(canvas2.toDataURL('image/jpeg'));
+    };
+    img2.src = logo2Img;
   }, []);
 
   const handleDelete = async (id: string) => {
@@ -73,6 +86,7 @@ export default function PageArchivio() {
       ivaApplicata: p.iva_applicata,
       totale: p.totale,
       logoBase64,
+      logo2Base64,
     });
   };
 

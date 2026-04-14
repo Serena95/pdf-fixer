@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import logoImg from '@/assets/logo.png';
+import logo2Img from '@/assets/logo_footer_1.jpeg';
 import type { ClientePreload } from '@/pages/Index';
 
 interface Props {
@@ -43,6 +44,7 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
   const [dataInizio, setDataInizio] = useState<Date | undefined>(undefined);
   const [ivaCheck, setIvaCheck] = useState(false);
   const [logoBase64, setLogoBase64] = useState('');
+  const [logo2Base64, setLogo2Base64] = useState('');
   // CATALOGO_FIN: importo deliberato for success fee calculation
   const [importoDeliberato, setImportoDeliberato] = useState(0);
 
@@ -59,6 +61,18 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
       setLogoBase64(canvas.toDataURL('image/png'));
     };
     img.src = logoImg;
+
+    const img2 = new Image();
+    img2.crossOrigin = 'anonymous';
+    img2.onload = () => {
+      const canvas2 = document.createElement('canvas');
+      canvas2.width = img2.width;
+      canvas2.height = img2.height;
+      const ctx2 = canvas2.getContext('2d');
+      ctx2?.drawImage(img2, 0, 0);
+      setLogo2Base64(canvas2.toDataURL('image/jpeg'));
+    };
+    img2.src = logo2Img;
   }, []);
 
   // Preload client from Clienti page
@@ -191,6 +205,7 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
       ivaApplicata: ivaCheck,
       totale,
       logoBase64,
+      logo2Base64,
     });
 
     // Save to DB
@@ -241,7 +256,8 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
   return (
     <div className="mx-auto max-w-[850px] rounded-lg bg-white p-9 shadow-lg">
       {/* Logo */}
-      <div className="mb-5 text-right">
+      <div className="mb-5 flex items-center justify-end gap-4">
+        <img src={logo2Img} alt="Sistema Cilento scpa" className="inline-block max-w-[60px]" />
         <img src={logoImg} alt="Cilento Kibs" className="inline-block max-w-[180px]" />
       </div>
 

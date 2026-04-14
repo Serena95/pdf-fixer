@@ -15,6 +15,7 @@ interface PdfData {
   ivaApplicata: boolean;
   totale: number;
   logoBase64: string;
+  logo2Base64?: string;
 }
 
 function fmt(n: number): string {
@@ -51,19 +52,32 @@ export function generatePDF(data: PdfData) {
   doc.setFont('helvetica', 'normal');
   doc.text('infocilentokibs@gmail.com', contactX, 25);
 
-  // Logo (destra) – alta qualità, proporzioni originali
+  // Logo Cilento Kibs (destra in alto)
   if (data.logoBase64) {
     try {
-      // Aspect ratio originale: 944x169 ≈ 5.59
       const logoRatio = 5.59;
-      const logoW = 50; // ~50mm di larghezza per nitidezza
+      const logoW = 50;
       const logoH = logoW / logoRatio;
       const logoX = W - marginR - logoW;
       const logoY = 14;
       const format = data.logoBase64.includes('image/png') ? 'PNG' : 'JPEG';
       doc.addImage(data.logoBase64, format, logoX, logoY, logoW, logoH);
     } catch (e) {
-      console.warn('Errore caricamento logo nel PDF:', e);
+      console.warn('Errore caricamento logo Kibs nel PDF:', e);
+    }
+  }
+
+  // Logo Sistema Cilento scpa (sotto il primo logo)
+  if (data.logo2Base64) {
+    try {
+      const logo2W = 25;
+      const logo2H = 25; // square-ish logo
+      const logo2X = W - marginR - logo2W;
+      const logo2Y = 26;
+      const format2 = data.logo2Base64.includes('image/png') ? 'PNG' : 'JPEG';
+      doc.addImage(data.logo2Base64, format2, logo2X, logo2Y, logo2W, logo2H);
+    } catch (e) {
+      console.warn('Errore caricamento logo Sistema Cilento nel PDF:', e);
     }
   }
 
