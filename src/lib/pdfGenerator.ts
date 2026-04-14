@@ -52,14 +52,17 @@ export function generatePDF(data: PdfData) {
   doc.setFont('helvetica', 'normal');
   doc.text('infocilentokibs@gmail.com', contactX, 25);
 
+  // Logos area (destra): Sistema Cilento scpa accanto a Cilento Kibs
+  const logosRightEdge = W - marginR;
+  
   // Logo Cilento Kibs (destra in alto)
   if (data.logoBase64) {
     try {
       const logoRatio = 5.59;
-      const logoW = 50;
+      const logoW = 45;
       const logoH = logoW / logoRatio;
-      const logoX = W - marginR - logoW;
-      const logoY = 14;
+      const logoX = logosRightEdge - logoW;
+      const logoY = 12;
       const format = data.logoBase64.includes('image/png') ? 'PNG' : 'JPEG';
       doc.addImage(data.logoBase64, format, logoX, logoY, logoW, logoH);
     } catch (e) {
@@ -67,13 +70,14 @@ export function generatePDF(data: PdfData) {
     }
   }
 
-  // Logo Sistema Cilento scpa (sotto il primo logo)
+  // Logo Sistema Cilento scpa (accanto a sinistra del logo Kibs)
   if (data.logo2Base64) {
     try {
-      const logo2W = 25;
-      const logo2H = 25; // square-ish logo
-      const logo2X = W - marginR - logo2W;
-      const logo2Y = 26;
+      // Il logo ha whitespace: usiamo dimensioni che lo rendano leggibile
+      const logo2H = 18;
+      const logo2W = 18; // roughly square content
+      const logo2X = logosRightEdge - 45 - logo2W - 3; // 3mm gap from Kibs logo
+      const logo2Y = 10;
       const format2 = data.logo2Base64.includes('image/png') ? 'PNG' : 'JPEG';
       doc.addImage(data.logo2Base64, format2, logo2X, logo2Y, logo2W, logo2H);
     } catch (e) {
