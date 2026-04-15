@@ -47,10 +47,10 @@ export default function PageArchivio() {
     const img2 = new Image();
     img2.crossOrigin = 'anonymous';
     img2.onload = () => {
-      const sx = Math.floor(img2.naturalWidth * 0.18);
-      const sy = Math.floor(img2.naturalHeight * 0.28);
-      const sw = Math.floor(img2.naturalWidth * 0.64);
-      const sh = Math.floor(img2.naturalHeight * 0.57);
+      const sx = Math.floor(img2.naturalWidth * 0.15);
+      const sy = Math.floor(img2.naturalHeight * 0.20);
+      const sw = Math.floor(img2.naturalWidth * 0.70);
+      const sh = Math.floor(img2.naturalHeight * 0.72);
       const canvas2 = document.createElement('canvas');
       canvas2.width = sw;
       canvas2.height = sh;
