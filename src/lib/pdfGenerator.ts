@@ -59,13 +59,13 @@ export function generatePDF(data: PdfData) {
   let logoBottomY = 12;
   if (data.logo2Base64) {
     try {
-      const logo2H = 20;
-      const logo2W = logo2H * 1.12;
+      const logo2H = 22;
+      const logo2W = logo2H * 0.97; // cropped image is ~square
       const logo2X = logosRightEdge - logo2W;
-      const logo2Y = 10;
+      const logo2Y = 8;
       const format2 = data.logo2Base64.includes('image/png') ? 'PNG' : 'JPEG';
       doc.addImage(data.logo2Base64, format2, logo2X, logo2Y, logo2W, logo2H);
-      logoBottomY = logo2Y + logo2H + 2;
+      logoBottomY = logo2Y + logo2H + 1;
     } catch (e) {
       console.warn('Errore caricamento logo Sistema Cilento nel PDF:', e);
     }

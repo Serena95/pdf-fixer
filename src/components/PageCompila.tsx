@@ -65,11 +65,11 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
     const img2 = new Image();
     img2.crossOrigin = 'anonymous';
     img2.onload = () => {
-      // Crop whitespace: content is roughly 15%-85% x, 25%-85% y
-      const sx = Math.floor(img2.width * 0.18);
-      const sy = Math.floor(img2.height * 0.28);
-      const sw = Math.floor(img2.width * 0.64);
-      const sh = Math.floor(img2.height * 0.57);
+      // Crop whitespace: content area ~15%-85% x, 20%-92% y
+      const sx = Math.floor(img2.width * 0.15);
+      const sy = Math.floor(img2.height * 0.20);
+      const sw = Math.floor(img2.width * 0.70);
+      const sh = Math.floor(img2.height * 0.72);
       const canvas2 = document.createElement('canvas');
       canvas2.width = sw;
       canvas2.height = sh;
