@@ -412,15 +412,23 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
               )}
             </div>
 
-            {/* Success fee - read only percentage */}
+            {/* Success fee - editable percentage */}
             <div>
-              <span className="text-[13px] font-bold text-gray-600">Success Fee</span>
-              <input
-                type="text"
-                value={`${currentModello.successFeePerc}% su importo deliberato/finanziato`}
-                readOnly
-                className="mt-1 w-full rounded-md border border-gray-300 bg-gray-100 px-3 py-2.5 text-sm font-semibold text-gray-700 cursor-not-allowed"
-              />
+              <span className="text-[13px] font-bold text-gray-600">Success Fee (%) — modificabile</span>
+              <div className="mt-1 flex items-center gap-2">
+                <input
+                  type="number"
+                  step="0.1"
+                  min="0"
+                  value={successFeePerc || ''}
+                  onChange={(e) => setSuccessFeePerc(parseFloat(e.target.value) || 0)}
+                  className="w-24 rounded-md border border-gray-300 bg-white px-3 py-2.5 text-sm font-semibold text-gray-700"
+                />
+                <span className="text-sm text-gray-600">% su importo deliberato/finanziato</span>
+              </div>
+              {currentModello.successFeePerc != null && successFeePerc !== currentModello.successFeePerc && (
+                <span className="text-[11px] text-orange-600">Valore di default: {currentModello.successFeePerc}%</span>
+              )}
             </div>
 
             {/* Importo deliberato - user input */}
@@ -435,7 +443,7 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
               />
               {importoDeliberato > 0 && (
                 <p className="mt-2 text-sm text-blue-700">
-                  Success fee ({currentModello.successFeePerc}%): <strong>€ {fmtEur(importoDeliberato * (currentModello.successFeePerc || 0) / 100)}</strong>
+                  Success fee ({successFeePerc}%): <strong>€ {fmtEur(importoDeliberato * (successFeePerc || 0) / 100)}</strong>
                 </p>
               )}
             </div>
