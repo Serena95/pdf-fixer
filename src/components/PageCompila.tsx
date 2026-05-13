@@ -584,7 +584,7 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
           <div className="mb-4 text-right text-sm text-gray-600">
             <p>Compenso fisso: € {fmtEur((currentModello.compensoFisso || 0) + (currentModello.compensoFisso2 || 0))}</p>
             {importoDeliberato > 0 && (
-              <p>Success fee ({currentModello.successFeePerc}%): € {fmtEur(importoDeliberato * (currentModello.successFeePerc || 0) / 100)}</p>
+              <p>Success fee ({successFeePerc}%): € {fmtEur(importoDeliberato * (successFeePerc || 0) / 100)}</p>
             )}
           </div>
         )}
