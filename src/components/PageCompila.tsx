@@ -190,10 +190,10 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
     let pdfDescription = descServizio;
     if (isCatalogoFin && currentModello) {
       const phases = currentModello.fasiPagamento || [];
-      const successFeeAmount = importoDeliberato * (currentModello.successFeePerc || 0) / 100;
+      const successFeeAmount = importoDeliberato * (successFeePerc || 0) / 100;
       pdfDescription = descServizio + '\n\nFasi di pagamento:\n' +
         phases.map(p => '• ' + p).join('\n') +
-        (importoDeliberato > 0 ? `\n\nImporto deliberato: € ${fmtEur(importoDeliberato)}\nSuccess fee (${currentModello.successFeePerc}%): € ${fmtEur(successFeeAmount)}` : '');
+        (importoDeliberato > 0 ? `\n\nImporto deliberato: € ${fmtEur(importoDeliberato)}\nSuccess fee (${successFeePerc}%): € ${fmtEur(successFeeAmount)}` : '');
     }
 
     // Generate PDF
