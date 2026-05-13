@@ -47,6 +47,7 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
   const [logo2Base64, setLogo2Base64] = useState('');
   // CATALOGO_FIN: importo deliberato for success fee calculation
   const [importoDeliberato, setImportoDeliberato] = useState(0);
+  const [successFeePerc, setSuccessFeePerc] = useState(0);
 
   // Load logo as base64
   useEffect(() => {
