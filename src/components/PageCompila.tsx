@@ -233,14 +233,18 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
 
       toast.success('PDF Generato e Preventivo Salvato!');
     } catch (err) {
-      console.error(err);
-      toast.error('Errore nel salvataggio');
+      if (import.meta.env.DEV) console.error('Save error:', err);
+      toast.error('Errore nel salvataggio. Riprova.');
     }
   };
 
   const handleSendEmail = () => {
     if (!cEmail) return toast.error("Inserisci l'email del cliente!");
-    window.location.href = `mailto:${cEmail}?subject=Preventivo ${docNum}&body=Buongiorno, in allegato il preventivo richiesto. Cordiali saluti.`;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(cEmail)) return toast.error('Email non valida!');
+    const subject = encodeURIComponent(`Preventivo ${docNum}`);
+    const body = encodeURIComponent('Buongiorno, in allegato il preventivo richiesto. Cordiali saluti.');
+    window.location.href = `mailto:${encodeURIComponent(cEmail)}?subject=${subject}&body=${body}`;
   };
 
   const handleReset = () => {
