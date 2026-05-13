@@ -47,6 +47,7 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
   const [logo2Base64, setLogo2Base64] = useState('');
   // CATALOGO_FIN: importo deliberato for success fee calculation
   const [importoDeliberato, setImportoDeliberato] = useState(0);
+  const [successFeePerc, setSuccessFeePerc] = useState(0);
 
   // Load logo as base64
   useEffect(() => {
@@ -128,7 +129,7 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
     imponibile = v1;
   } else if (isCatalogoFin && currentModello) {
     const fisso = (currentModello.compensoFisso || 0) + (currentModello.compensoFisso2 || 0);
-    const successFee = importoDeliberato * (currentModello.successFeePerc || 0) / 100;
+    const successFee = importoDeliberato * (successFeePerc || 0) / 100;
     imponibile = fisso + successFee;
   } else if (currentModello) {
     imponibile = calcTotal(currentModello.fields, v1, v2, v3, vQty);
@@ -152,6 +153,7 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
     const key = unitValue.split(' ')[0];
     const cfg = key ? unitConfig[key] : null;
     const mod = cfg && val !== '' ? cfg.modelli[parseInt(val)] : null;
+    setSuccessFeePerc(mod?.successFeePerc || 0);
     if (mod?.fields === 'CATALOGO_FIN' && mod.descrizioneOperativa) {
       setDescServizio(mod.descrizioneOperativa);
     } else {
@@ -188,10 +190,10 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
     let pdfDescription = descServizio;
     if (isCatalogoFin && currentModello) {
       const phases = currentModello.fasiPagamento || [];
-      const successFeeAmount = importoDeliberato * (currentModello.successFeePerc || 0) / 100;
+      const successFeeAmount = importoDeliberato * (successFeePerc || 0) / 100;
       pdfDescription = descServizio + '\n\nFasi di pagamento:\n' +
         phases.map(p => '• ' + p).join('\n') +
-        (importoDeliberato > 0 ? `\n\nImporto deliberato: € ${fmtEur(importoDeliberato)}\nSuccess fee (${currentModello.successFeePerc}%): € ${fmtEur(successFeeAmount)}` : '');
+        (importoDeliberato > 0 ? `\n\nImporto deliberato: € ${fmtEur(importoDeliberato)}\nSuccess fee (${successFeePerc}%): € ${fmtEur(successFeeAmount)}` : '');
     }
 
     // Generate PDF
@@ -410,15 +412,23 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
               )}
             </div>
 
-            {/* Success fee - read only percentage */}
+            {/* Success fee - editable percentage */}
             <div>
-              <span className="text-[13px] font-bold text-gray-600">Success Fee</span>
-              <input
-                type="text"
-                value={`${currentModello.successFeePerc}% su importo deliberato/finanziato`}
-                readOnly
-                className="mt-1 w-full rounded-md border border-gray-300 bg-gray-100 px-3 py-2.5 text-sm font-semibold text-gray-700 cursor-not-allowed"
-              />
+              <span className="text-[13px] font-bold text-gray-600">Success Fee (%) — modificabile</span>
+              <div className="mt-1 flex items-center gap-2">
+                <input
+                  type="number"
+                  step="0.1"
+                  min="0"
+                  value={successFeePerc || ''}
+                  onChange={(e) => setSuccessFeePerc(parseFloat(e.target.value) || 0)}
+                  className="w-24 rounded-md border border-gray-300 bg-white px-3 py-2.5 text-sm font-semibold text-gray-700"
+                />
+                <span className="text-sm text-gray-600">% su importo deliberato/finanziato</span>
+              </div>
+              {currentModello.successFeePerc != null && successFeePerc !== currentModello.successFeePerc && (
+                <span className="text-[11px] text-orange-600">Valore di default: {currentModello.successFeePerc}%</span>
+              )}
             </div>
 
             {/* Importo deliberato - user input */}
@@ -433,7 +443,7 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
               />
               {importoDeliberato > 0 && (
                 <p className="mt-2 text-sm text-blue-700">
-                  Success fee ({currentModello.successFeePerc}%): <strong>€ {fmtEur(importoDeliberato * (currentModello.successFeePerc || 0) / 100)}</strong>
+                  Success fee ({successFeePerc}%): <strong>€ {fmtEur(importoDeliberato * (successFeePerc || 0) / 100)}</strong>
                 </p>
               )}
             </div>
@@ -574,7 +584,7 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
           <div className="mb-4 text-right text-sm text-gray-600">
             <p>Compenso fisso: € {fmtEur((currentModello.compensoFisso || 0) + (currentModello.compensoFisso2 || 0))}</p>
             {importoDeliberato > 0 && (
-              <p>Success fee ({currentModello.successFeePerc}%): € {fmtEur(importoDeliberato * (currentModello.successFeePerc || 0) / 100)}</p>
+              <p>Success fee ({successFeePerc}%): € {fmtEur(importoDeliberato * (successFeePerc || 0) / 100)}</p>
             )}
           </div>
         )}
