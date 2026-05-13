@@ -129,7 +129,7 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
     imponibile = v1;
   } else if (isCatalogoFin && currentModello) {
     const fisso = (currentModello.compensoFisso || 0) + (currentModello.compensoFisso2 || 0);
-    const successFee = importoDeliberato * (currentModello.successFeePerc || 0) / 100;
+    const successFee = importoDeliberato * (successFeePerc || 0) / 100;
     imponibile = fisso + successFee;
   } else if (currentModello) {
     imponibile = calcTotal(currentModello.fields, v1, v2, v3, vQty);
