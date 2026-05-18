@@ -48,6 +48,9 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
   // CATALOGO_FIN: importo deliberato for success fee calculation
   const [importoDeliberato, setImportoDeliberato] = useState(0);
   const [successFeePerc, setSuccessFeePerc] = useState(0);
+  // CATALOGO_PIANO variabile (ROSSO): obiettivi editabili
+  const [rossoContributi, setRossoContributi] = useState(0);
+  const [rossoFinanziamenti, setRossoFinanziamenti] = useState(0);
 
   // Load logo as base64
   useEffect(() => {
