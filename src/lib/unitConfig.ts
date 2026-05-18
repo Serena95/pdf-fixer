@@ -130,7 +130,7 @@ export const unitConfig: Record<string, UnitConfig> = {
         codice: 'CK-01-FIN-PIANO-VERDE',
         titoloServizio: 'CK-01 VERDE — Consulenza Continuativa',
         importoFisso: 10000,
-        displayImporto: '10K + IVA',
+        displayImporto: '€ 10.000,00 + IVA',
         descrizioneOperativa: 'Servizio di consulenza continuativa in finanza agevolata — pacchetto VERDE.\n\nAttività comprese:\n• Analisi dimensionale dell\'azienda ed elenco delle agevolazioni aperte e/o in apertura\n• Analisi pre-fattibilità dei progetti d\'investimento\n• Progettazione e presentazione delle misure agevolative individuate e condivise con il cliente\n• Istruttoria delle domande ed assistenza tecnica alla presentazione\n• Rendicontazione delle misure\n• Garanzia di risultato minimo (vedi tabella obiettivi)\n\nCosto contratto: € 10.000,00 + IVA',
         obiettiviGarantiti: [
           { label: 'OBIETTIVO MIN. GARANTITO 1', contributi: '€ 20.000,00', finanziamenti: '€ 0,00' },
