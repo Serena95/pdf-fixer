@@ -168,6 +168,9 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
     if (mod?.fields === 'CATALOGO_CANONE') {
       setV2(1); // default 1 mese
     }
+    if (mod?.fields === 'CATALOGO_PIANO') {
+      setIvaCheck(true); // IVA sempre applicata sui piani commerciali
+    }
   };
 
   const fmtEur = (n: number) => n.toLocaleString('it-IT', { minimumFractionDigits: 2 });
@@ -209,6 +212,15 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
       pdfDescription = descServizio + '\n\nFasi di pagamento:\n' +
         phases.map(p => '• ' + p).join('\n') +
         (importoDeliberato > 0 ? `\n\nImporto deliberato: € ${fmtEur(importoDeliberato)}\nSuccess fee (${successFeePerc}%): € ${fmtEur(successFeeAmount)}` : '');
+    }
+    if (isCatalogoPiano && currentModello) {
+      const obiettivi = currentModello.obiettiviGarantiti || [];
+      if (obiettivi.length > 0) {
+        pdfDescription = descServizio + '\n\nGaranzia di risultato minimo (TABELLA A):\n' +
+          obiettivi.map(o => `• ${o.label} — Contributi: ${o.contributi} | Finanziamenti: ${o.finanziamenti}`).join('\n');
+      }
+      const importoFinale = currentModello.variabile ? (v1 || 0) : (currentModello.importoFisso || 0);
+      pdfDescription += `\n\nImporto contratto: € ${fmtEur(importoFinale)} + IVA 22%`;
     }
 
     // Generate PDF
@@ -547,6 +559,46 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
                   readOnly
                   className="mt-1 w-full rounded-md border border-gray-300 bg-gray-100 px-3 py-2.5 text-sm font-semibold text-gray-700 cursor-not-allowed"
                 />
+              </div>
+            )}
+
+            {/* Nota IVA */}
+            <div className="rounded-md bg-yellow-50 border border-yellow-300 p-2 text-center">
+              <span className="text-[12px] font-semibold text-yellow-800">
+                ⚠️ Tutti gli importi sono da intendersi <strong>+ IVA 22%</strong>
+              </span>
+            </div>
+
+            {/* Tabella obiettivi garantiti */}
+            {currentModello.obiettiviGarantiti && currentModello.obiettiviGarantiti.length > 0 && (
+              <div className="rounded-md bg-white/80 border border-gray-300 p-3">
+                <p className="mb-2 text-[12px] font-bold text-gray-700 uppercase tracking-wider">
+                  Garanzia di Risultato Minimo — TABELLA A
+                </p>
+                <div className="overflow-x-auto">
+                  <table className="w-full border-collapse text-[11px]">
+                    <thead>
+                      <tr className="bg-green-100">
+                        <th className="border border-gray-400 px-2 py-1.5 text-left font-bold text-gray-800">Obiettivo</th>
+                        <th className="border border-gray-400 px-2 py-1.5 text-left font-bold text-gray-800">
+                          Contributi C/Capitale, C/Interessi e/o Credito d'imposta
+                        </th>
+                        <th className="border border-gray-400 px-2 py-1.5 text-left font-bold text-gray-800">
+                          Finanziamenti Agevolati
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {currentModello.obiettiviGarantiti.map((o, i) => (
+                        <tr key={i} className="bg-white">
+                          <td className="border border-gray-400 px-2 py-1.5 font-semibold text-gray-700">{o.label}</td>
+                          <td className="border border-gray-400 px-2 py-1.5 text-gray-700">{o.contributi}</td>
+                          <td className="border border-gray-400 px-2 py-1.5 text-gray-700">{o.finanziamenti}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             )}
           </div>

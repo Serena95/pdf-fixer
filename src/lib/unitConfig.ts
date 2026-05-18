@@ -22,6 +22,7 @@ export interface Modello {
   importoFisso?: number;
   variabile?: boolean;
   displayImporto?: string;
+  obiettiviGarantiti?: Array<{ label: string; contributi: string; finanziamenti: string }>;
 }
 
 export interface UnitConfig {
@@ -130,7 +131,11 @@ export const unitConfig: Record<string, UnitConfig> = {
         titoloServizio: 'Maestrale 10K — Consulenza Continuativa',
         importoFisso: 10000,
         displayImporto: '10K + IVA',
-        descrizioneOperativa: 'Servizio di consulenza continuativa in finanza agevolata "Maestrale 10K":\n• Analisi dimensionale dell\'azienda ed elenco delle agevolazioni aperte e/o in apertura\n• Analisi pre-fattibilità dei progetti d\'investimento\n• Progettazione e presentazione delle misure agevolative individuate e condivise con il cliente\n• Istruttoria delle domande ed assistenza tecnica alla presentazione\n• Rendicontazione delle misure\n• Garanzia di risultato minimo (obiettivo: € 20.000 contributi o € 50.000 finanziamenti agevolati)\n\nCosto contratto: € 10.000,00 + IVA',
+        descrizioneOperativa: 'Servizio di consulenza continuativa in finanza agevolata — pacchetto "Maestrale 10K".\n\nAttività comprese:\n• Analisi dimensionale dell\'azienda ed elenco delle agevolazioni aperte e/o in apertura\n• Analisi pre-fattibilità dei progetti d\'investimento\n• Progettazione e presentazione delle misure agevolative individuate e condivise con il cliente\n• Istruttoria delle domande ed assistenza tecnica alla presentazione\n• Rendicontazione delle misure\n• Garanzia di risultato minimo (vedi tabella obiettivi)\n\nCosto contratto: € 10.000,00 + IVA',
+        obiettiviGarantiti: [
+          { label: 'OBIETTIVO MIN. GARANTITO 1', contributi: '€ 20.000,00', finanziamenti: '€ 0,00' },
+          { label: 'OBIETTIVO MIN. GARANTITO 2', contributi: '€ 0,00', finanziamenti: '€ 50.000,00' },
+        ],
       },
       {
         nome: 'CK-01 BIANCO — Grecale 20K',
@@ -139,7 +144,11 @@ export const unitConfig: Record<string, UnitConfig> = {
         titoloServizio: 'Grecale 20K — Consulenza Continuativa',
         importoFisso: 20000,
         displayImporto: '20K + IVA',
-        descrizioneOperativa: 'Servizio di consulenza continuativa in finanza agevolata "Grecale 20K":\n• Analisi dimensionale dell\'azienda ed elenco delle agevolazioni aperte e/o in apertura\n• Analisi pre-fattibilità dei progetti d\'investimento\n• Progettazione e presentazione delle misure agevolative individuate e condivise con il cliente\n• Istruttoria delle domande ed assistenza tecnica alla presentazione\n• Rendicontazione delle misure\n• Garanzia di risultato minimo (obiettivo: € 45.000 contributi o € 120.000 finanziamenti agevolati)\n\nCosto contratto: € 20.000,00 + IVA',
+        descrizioneOperativa: 'Servizio di consulenza continuativa in finanza agevolata — pacchetto "Grecale 20K".\n\nAttività comprese:\n• Analisi dimensionale dell\'azienda ed elenco delle agevolazioni aperte e/o in apertura\n• Analisi pre-fattibilità dei progetti d\'investimento\n• Progettazione e presentazione delle misure agevolative individuate e condivise con il cliente\n• Istruttoria delle domande ed assistenza tecnica alla presentazione\n• Rendicontazione delle misure\n• Garanzia di risultato minimo (vedi tabella obiettivi)\n\nCosto contratto: € 20.000,00 + IVA',
+        obiettiviGarantiti: [
+          { label: 'OBIETTIVO MIN. GARANTITO 1', contributi: '€ 45.000,00', finanziamenti: '€ 0,00' },
+          { label: 'OBIETTIVO MIN. GARANTITO 2', contributi: '€ 0,00', finanziamenti: '€ 120.000,00' },
+        ],
       },
       {
         nome: 'CK-01 ROSSO — Scirocco',
@@ -148,7 +157,11 @@ export const unitConfig: Record<string, UnitConfig> = {
         titoloServizio: 'Scirocco — Consulenza Continuativa Custom',
         variabile: true,
         displayImporto: 'Importo variabile + IVA',
-        descrizioneOperativa: 'Servizio di consulenza continuativa in finanza agevolata "Scirocco" — soluzione personalizzata sulle esigenze del cliente:\n• Analisi dimensionale dell\'azienda ed elenco delle agevolazioni aperte e/o in apertura\n• Analisi pre-fattibilità dei progetti d\'investimento\n• Progettazione e presentazione delle misure agevolative individuate e condivise con il cliente\n• Istruttoria delle domande ed assistenza tecnica alla presentazione\n• Rendicontazione delle misure\n• Garanzia di risultato minimo (obiettivi da definire con il cliente)\n\nCosto contratto: variabile su esigenza del cliente + IVA',
+        descrizioneOperativa: 'Servizio di consulenza continuativa in finanza agevolata — pacchetto "Scirocco", soluzione personalizzata sulle esigenze del cliente.\n\nAttività comprese:\n• Analisi dimensionale dell\'azienda ed elenco delle agevolazioni aperte e/o in apertura\n• Analisi pre-fattibilità dei progetti d\'investimento\n• Progettazione e presentazione delle misure agevolative individuate e condivise con il cliente\n• Istruttoria delle domande ed assistenza tecnica alla presentazione\n• Rendicontazione delle misure\n• Garanzia di risultato minimo (obiettivi da definire con il cliente — vedi tabella)\n\nCosto contratto: variabile su esigenza del cliente + IVA',
+        obiettiviGarantiti: [
+          { label: 'OBIETTIVO MIN. GARANTITO 1', contributi: 'Da definire', finanziamenti: '€ 0,00' },
+          { label: 'OBIETTIVO MIN. GARANTITO 2', contributi: '€ 0,00', finanziamenti: 'Da definire' },
+        ],
       },
     ],
   },
