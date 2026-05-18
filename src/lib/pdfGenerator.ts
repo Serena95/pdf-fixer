@@ -16,6 +16,8 @@ interface PdfData {
   totale: number;
   logoBase64: string;
   logo2Base64?: string;
+  obiettiviTable?: Array<{ label: string; contributi: string; finanziamenti: string }>;
+  importoContrattoLabel?: string;
 }
 
 function fmt(n: number): string {
