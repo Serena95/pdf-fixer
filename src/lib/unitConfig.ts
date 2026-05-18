@@ -1,6 +1,6 @@
 export interface Modello {
   nome: string;
-  fields: 'FISSO' | 'FISSO_PERC' | 'CANONE' | 'PACCHETTO' | 'MIX' | 'CAMPAGNA' | 'CATALOGO_FIN';
+  fields: 'FISSO' | 'FISSO_PERC' | 'CANONE' | 'PACCHETTO' | 'MIX' | 'CAMPAGNA' | 'CATALOGO_FIN' | 'CATALOGO_CANONE';
   label?: string;
   label1?: string;
   label2?: string;
@@ -15,6 +15,9 @@ export interface Modello {
   successFeePerc?: number;
   descrizioneOperativa?: string;
   fasiPagamento?: string[];
+  // CATALOGO_CANONE specific (fixed monthly plans)
+  canoneMensile?: number;
+  titoloServizio?: string;
 }
 
 export interface UnitConfig {
