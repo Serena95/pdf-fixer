@@ -182,6 +182,9 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
     } else if (isCatalogoFin) {
       pdfQty = 1;
       pdfUnitPrice = imponibile;
+    } else if (isCatalogoCanone && currentModello) {
+      pdfQty = v2 || 1;
+      pdfUnitPrice = currentModello.canoneMensile || 0;
     } else if (currentModello?.fields === 'CANONE' || currentModello?.fields === 'PACCHETTO') {
       pdfQty = v2 || 1;
       pdfUnitPrice = v1;
