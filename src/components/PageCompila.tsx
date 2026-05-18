@@ -299,6 +299,8 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
     setDataInizio(undefined);
     setIvaCheck(false);
     setImportoDeliberato(0);
+    setRossoContributi(0);
+    setRossoFinanziamenti(0);
   };
 
   const showQty = currentModello && (currentModello.fields === 'FISSO' || currentModello.fields === 'FISSO_PERC');
