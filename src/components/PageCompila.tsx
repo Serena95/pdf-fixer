@@ -547,19 +547,53 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
               )}
             </div>
             {currentModello.variabile ? (
-              <div className="rounded-md border-2 border-blue-300 bg-blue-50 p-4">
-                <span className="text-[13px] font-bold text-blue-800">
-                  Importo Contratto (€) * — {currentModello.displayImporto}
-                </span>
-                <input
-                  type="number"
-                  min="0"
-                  value={v1 || ''}
-                  onChange={(e) => setV1(parseFloat(e.target.value) || 0)}
-                  placeholder="Inserisci l'importo concordato..."
-                  className="mt-1 w-full rounded-md border border-blue-300 px-3 py-2.5 text-sm"
-                />
-              </div>
+              <>
+                <div className="rounded-md border-2 border-red-300 bg-red-50 p-4">
+                  <span className="text-[13px] font-bold text-red-800">
+                    Importo Contratto ROSSO (€) * — personalizzabile
+                  </span>
+                  <input
+                    type="number"
+                    min="0"
+                    step="100"
+                    value={v1 || ''}
+                    onChange={(e) => setV1(parseFloat(e.target.value) || 0)}
+                    placeholder="Inserisci l'importo concordato (es. 35000)..."
+                    className="mt-1 w-full rounded-md border border-red-300 px-3 py-2.5 text-sm font-semibold"
+                  />
+                  {v1 > 0 && (
+                    <div className="mt-2 text-[12px] text-red-900 space-y-0.5">
+                      <p>Imponibile: <strong>€ {fmtEur(v1)}</strong></p>
+                      <p>IVA 22%: <strong>€ {fmtEur(v1 * 0.22)}</strong></p>
+                      <p>Totale: <strong>€ {fmtEur(v1 * 1.22)}</strong></p>
+                    </div>
+                  )}
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <span className="text-[13px] font-bold text-gray-600">Obiettivo Contributi (€)</span>
+                    <input
+                      type="number"
+                      min="0"
+                      value={rossoContributi || ''}
+                      onChange={(e) => setRossoContributi(parseFloat(e.target.value) || 0)}
+                      placeholder="es. 60000"
+                      className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm"
+                    />
+                  </div>
+                  <div>
+                    <span className="text-[13px] font-bold text-gray-600">Obiettivo Finanziamenti (€)</span>
+                    <input
+                      type="number"
+                      min="0"
+                      value={rossoFinanziamenti || ''}
+                      onChange={(e) => setRossoFinanziamenti(parseFloat(e.target.value) || 0)}
+                      placeholder="es. 180000"
+                      className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm"
+                    />
+                  </div>
+                </div>
+              </>
             ) : (
               <div>
                 <span className="text-[13px] font-bold text-gray-600">Importo Contratto</span>
