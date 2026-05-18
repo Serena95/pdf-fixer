@@ -191,22 +191,21 @@ export function generatePDF(data: PdfData) {
   if (data.obiettiviTable && data.obiettiviTable.length > 0) {
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(9);
-    doc.text('TABELLA A — Garanzia di risultato minimo', marginL, y);
+    doc.text('Garanzia di Risultato Minimo — TABELLA A', marginL, y);
     y += 4;
 
-    const tCol1W = contentW * 0.44; // Obiettivo
-    const tCol2W = contentW * 0.28; // Contributi
-    const tCol3W = contentW * 0.28; // Finanziamenti
+    const tCol1W = contentW * 0.26; // Obiettivo
+    const tCol2W = contentW * 0.44; // Contributi
+    const tCol3W = contentW * 0.30; // Finanziamenti
     const tCol1X = marginL;
     const tCol2X = tCol1X + tCol1W;
     const tCol3X = tCol2X + tCol2W;
-    const tEndX = marginL + contentW;
 
-    const rowH = 8;
-    const headerH = 7;
+    const rowH = 9;
+    const headerH = 11;
 
-    // Header background
-    doc.setFillColor(230, 235, 245);
+    // Header
+    doc.setFillColor(220, 240, 220);
     doc.rect(tCol1X, y, contentW, headerH, 'F');
     doc.setDrawColor(0);
     doc.setLineWidth(0.2);
@@ -215,25 +214,38 @@ export function generatePDF(data: PdfData) {
     doc.line(tCol3X, y, tCol3X, y + headerH);
 
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(8);
-    doc.text('Obiettivo', tCol1X + 2, y + 4.7);
-    doc.text('Contributi', tCol2X + tCol2W / 2, y + 4.7, { align: 'center' });
-    doc.text('Finanziamenti', tCol3X + tCol3W / 2, y + 4.7, { align: 'center' });
+    doc.setFontSize(7.5);
+    doc.text('Obiettivo', tCol1X + 2, y + 6.5);
+    const h2 = doc.splitTextToSize("Contributi C/Capitale, C/Interessi e/o Credito d'imposta", tCol2W - 4);
+    doc.text(h2, tCol2X + 2, y + 4);
+    doc.text('Finanziamenti Agevolati', tCol3X + 2, y + 6.5);
     y += headerH;
 
     doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
     data.obiettiviTable.forEach((o) => {
       doc.rect(tCol1X, y, contentW, rowH);
       doc.line(tCol2X, y, tCol2X, y + rowH);
       doc.line(tCol3X, y, tCol3X, y + rowH);
-      doc.text(o.label, tCol1X + 2, y + 5);
-      doc.text(o.contributi, tCol2X + tCol2W / 2, y + 5, { align: 'center' });
-      doc.text(o.finanziamenti, tCol3X + tCol3W / 2, y + 5, { align: 'center' });
+      doc.setFont('helvetica', 'bold');
+      doc.text(o.label, tCol1X + 2, y + 5.5);
+      doc.setFont('helvetica', 'normal');
+      doc.text(o.contributi, tCol2X + 2, y + 5.5);
+      doc.text(o.finanziamenti, tCol3X + 2, y + 5.5);
       y += rowH;
     });
 
+    // Nota
+    y += 4;
+    doc.setFont('helvetica', 'italic');
+    doc.setFontSize(8);
+    const nota = "Nota: l'obiettivo minimo garantito si intende raggiunto al verificarsi di UNA SOLA delle voci indicate in tabella, non di tutte.";
+    const notaLines = doc.splitTextToSize(nota, contentW);
+    doc.text(notaLines, marginL, y);
+    y += notaLines.length * 4;
+
     if (data.importoContrattoLabel) {
-      y += 5;
+      y += 3;
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(9);
       doc.text('Importo contratto: ', marginL, y);
