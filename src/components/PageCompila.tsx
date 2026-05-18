@@ -561,6 +561,46 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
                 />
               </div>
             )}
+
+            {/* Nota IVA */}
+            <div className="rounded-md bg-yellow-50 border border-yellow-300 p-2 text-center">
+              <span className="text-[12px] font-semibold text-yellow-800">
+                ⚠️ Tutti gli importi sono da intendersi <strong>+ IVA 22%</strong>
+              </span>
+            </div>
+
+            {/* Tabella obiettivi garantiti */}
+            {currentModello.obiettiviGarantiti && currentModello.obiettiviGarantiti.length > 0 && (
+              <div className="rounded-md bg-white/80 border border-gray-300 p-3">
+                <p className="mb-2 text-[12px] font-bold text-gray-700 uppercase tracking-wider">
+                  Garanzia di Risultato Minimo — TABELLA A
+                </p>
+                <div className="overflow-x-auto">
+                  <table className="w-full border-collapse text-[11px]">
+                    <thead>
+                      <tr className="bg-green-100">
+                        <th className="border border-gray-400 px-2 py-1.5 text-left font-bold text-gray-800">Obiettivo</th>
+                        <th className="border border-gray-400 px-2 py-1.5 text-left font-bold text-gray-800">
+                          Contributi C/Capitale, C/Interessi e/o Credito d'imposta
+                        </th>
+                        <th className="border border-gray-400 px-2 py-1.5 text-left font-bold text-gray-800">
+                          Finanziamenti Agevolati
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {currentModello.obiettiviGarantiti.map((o, i) => (
+                        <tr key={i} className="bg-white">
+                          <td className="border border-gray-400 px-2 py-1.5 font-semibold text-gray-700">{o.label}</td>
+                          <td className="border border-gray-400 px-2 py-1.5 text-gray-700">{o.contributi}</td>
+                          <td className="border border-gray-400 px-2 py-1.5 text-gray-700">{o.finanziamenti}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
           </div>
         )}
 
