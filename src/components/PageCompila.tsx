@@ -213,14 +213,14 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
         phases.map(p => '• ' + p).join('\n') +
         (importoDeliberato > 0 ? `\n\nImporto deliberato: € ${fmtEur(importoDeliberato)}\nSuccess fee (${successFeePerc}%): € ${fmtEur(successFeeAmount)}` : '');
     }
+    let obiettiviTable: Array<{ label: string; contributi: string; finanziamenti: string }> | undefined;
+    let importoContrattoLabel: string | undefined;
     if (isCatalogoPiano && currentModello) {
-      const obiettivi = currentModello.obiettiviGarantiti || [];
-      if (obiettivi.length > 0) {
-        pdfDescription = descServizio + '\n\nGaranzia di risultato minimo (TABELLA A):\n' +
-          obiettivi.map(o => `• ${o.label} — Contributi: ${o.contributi} | Finanziamenti: ${o.finanziamenti}`).join('\n');
-      }
+      obiettiviTable = currentModello.obiettiviGarantiti;
       const importoFinale = currentModello.variabile ? (v1 || 0) : (currentModello.importoFisso || 0);
-      pdfDescription += `\n\nImporto contratto: € ${fmtEur(importoFinale)} + IVA 22%`;
+      importoContrattoLabel = currentModello.variabile && !v1
+        ? 'variabile su esigenza del cliente + IVA 22%'
+        : `€ ${fmtEur(importoFinale)} + IVA 22%`;
     }
 
     // Generate PDF
@@ -240,6 +240,8 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
       totale,
       logoBase64,
       logo2Base64,
+      obiettiviTable,
+      importoContrattoLabel,
     });
 
     // Save to DB
