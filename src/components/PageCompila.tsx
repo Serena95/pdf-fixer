@@ -150,6 +150,8 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
     setModelloIdx('');
     setV1(0); setV2(0); setV3(0); setVQty(1);
     setImportoDeliberato(0);
+    setRossoContributi(0);
+    setRossoFinanziamenti(0);
   };
 
   const handleModelloChange = (val: string) => {
