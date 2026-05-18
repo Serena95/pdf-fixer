@@ -1,6 +1,6 @@
 export interface Modello {
   nome: string;
-  fields: 'FISSO' | 'FISSO_PERC' | 'CANONE' | 'PACCHETTO' | 'MIX' | 'CAMPAGNA' | 'CATALOGO_FIN' | 'CATALOGO_CANONE';
+  fields: 'FISSO' | 'FISSO_PERC' | 'CANONE' | 'PACCHETTO' | 'MIX' | 'CAMPAGNA' | 'CATALOGO_FIN' | 'CATALOGO_CANONE' | 'CATALOGO_PIANO';
   label?: string;
   label1?: string;
   label2?: string;
@@ -18,6 +18,10 @@ export interface Modello {
   // CATALOGO_CANONE specific (fixed monthly plans)
   canoneMensile?: number;
   titoloServizio?: string;
+  // CATALOGO_PIANO specific (commercial plans with fixed/variable total)
+  importoFisso?: number;
+  variabile?: boolean;
+  displayImporto?: string;
 }
 
 export interface UnitConfig {
