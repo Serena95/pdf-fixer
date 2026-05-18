@@ -160,7 +160,7 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
     const cfg = key ? unitConfig[key] : null;
     const mod = cfg && val !== '' ? cfg.modelli[parseInt(val)] : null;
     setSuccessFeePerc(mod?.successFeePerc || 0);
-    if ((mod?.fields === 'CATALOGO_FIN' || mod?.fields === 'CATALOGO_CANONE') && mod.descrizioneOperativa) {
+    if ((mod?.fields === 'CATALOGO_FIN' || mod?.fields === 'CATALOGO_CANONE' || mod?.fields === 'CATALOGO_PIANO') && mod.descrizioneOperativa) {
       setDescServizio(mod.descrizioneOperativa);
     } else {
       setDescServizio('');
