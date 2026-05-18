@@ -1,6 +1,6 @@
 export interface Modello {
   nome: string;
-  fields: 'FISSO' | 'FISSO_PERC' | 'CANONE' | 'PACCHETTO' | 'MIX' | 'CAMPAGNA' | 'CATALOGO_FIN';
+  fields: 'FISSO' | 'FISSO_PERC' | 'CANONE' | 'PACCHETTO' | 'MIX' | 'CAMPAGNA' | 'CATALOGO_FIN' | 'CATALOGO_CANONE';
   label?: string;
   label1?: string;
   label2?: string;
@@ -15,6 +15,9 @@ export interface Modello {
   successFeePerc?: number;
   descrizioneOperativa?: string;
   fasiPagamento?: string[];
+  // CATALOGO_CANONE specific (fixed monthly plans)
+  canoneMensile?: number;
+  titoloServizio?: string;
 }
 
 export interface UnitConfig {
@@ -140,6 +143,30 @@ export const unitConfig: Record<string, UnitConfig> = {
     bg: '#f3e5f5',
     border: '#7b1fa2',
     modelli: [
+      {
+        nome: 'CK-04 VERDE — Comunicazione Istituzionale Base',
+        fields: 'CATALOGO_CANONE',
+        codice: 'CK-04-MKT-VERDE',
+        titoloServizio: 'Comunicazione Istituzionale Base',
+        canoneMensile: 1000,
+        descrizioneOperativa: 'Strategia editoriale di base, gestione social istituzionale, 4–6 contenuti mensili, copywriting, revisione materiali e report attività. Pensato per enti che desiderano una comunicazione più chiara, ordinata e continuativa.',
+      },
+      {
+        nome: 'CK-04 BIANCO — Marketing Territoriale & Storytelling',
+        fields: 'CATALOGO_CANONE',
+        codice: 'CK-04-MKT-BIANCO',
+        titoloServizio: 'Marketing Territoriale & Storytelling',
+        canoneMensile: 1500,
+        descrizioneOperativa: 'Include il Piano Verde + storytelling territoriale, rubriche editoriali, 8–10 contenuti mensili, 2 video base, comunicazione eventi, coordinamento stakeholder e valorizzazione narrativa del territorio.',
+      },
+      {
+        nome: 'CK-04 ROSSO — Strategia, AI & Innovazione Pubblica',
+        fields: 'CATALOGO_CANONE',
+        codice: 'CK-04-MKT-ROSSO',
+        titoloServizio: 'Strategia, AI & Innovazione Pubblica',
+        canoneMensile: 2000,
+        descrizioneOperativa: 'Include il Piano Bianco + strategia di posizionamento, 12–14 contenuti mensili, video storytelling premium, strumenti AI per semplificazione comunicativa, supporto PR, campagne tematiche e valorizzazione progettuale dell\'Ente.',
+      },
       { nome: 'Canone Mensile', fields: 'CANONE', label: 'Importo Canone Mensile (€) *', label2: 'Durata (Mesi) *', hasDataInizio: true },
       { nome: 'Campagna Una Tantum', fields: 'CAMPAGNA', label: 'Importo Totale Campagna (€) *', label2: 'Numero Tranche' },
       { nome: 'Mix (Setup + Canone)', fields: 'MIX', label: 'Setup Fee (€)', label2: 'Importo Canone Mensile (€)' },
