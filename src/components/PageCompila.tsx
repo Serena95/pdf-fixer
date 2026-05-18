@@ -157,10 +157,13 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
     const cfg = key ? unitConfig[key] : null;
     const mod = cfg && val !== '' ? cfg.modelli[parseInt(val)] : null;
     setSuccessFeePerc(mod?.successFeePerc || 0);
-    if (mod?.fields === 'CATALOGO_FIN' && mod.descrizioneOperativa) {
+    if ((mod?.fields === 'CATALOGO_FIN' || mod?.fields === 'CATALOGO_CANONE') && mod.descrizioneOperativa) {
       setDescServizio(mod.descrizioneOperativa);
     } else {
       setDescServizio('');
+    }
+    if (mod?.fields === 'CATALOGO_CANONE') {
+      setV2(1); // default 1 mese
     }
   };
 
