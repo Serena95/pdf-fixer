@@ -213,6 +213,15 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
         phases.map(p => '• ' + p).join('\n') +
         (importoDeliberato > 0 ? `\n\nImporto deliberato: € ${fmtEur(importoDeliberato)}\nSuccess fee (${successFeePerc}%): € ${fmtEur(successFeeAmount)}` : '');
     }
+    if (isCatalogoPiano && currentModello) {
+      const obiettivi = currentModello.obiettiviGarantiti || [];
+      if (obiettivi.length > 0) {
+        pdfDescription = descServizio + '\n\nGaranzia di risultato minimo (TABELLA A):\n' +
+          obiettivi.map(o => `• ${o.label} — Contributi: ${o.contributi} | Finanziamenti: ${o.finanziamenti}`).join('\n');
+      }
+      const importoFinale = currentModello.variabile ? (v1 || 0) : (currentModello.importoFisso || 0);
+      pdfDescription += `\n\nImporto contratto: € ${fmtEur(importoFinale)} + IVA 22%`;
+    }
 
     // Generate PDF
     generatePDF({
