@@ -633,7 +633,13 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
                       </tr>
                     </thead>
                     <tbody>
-                      {currentModello.obiettiviGarantiti.map((o, i) => (
+                      {(currentModello.variabile
+                        ? [
+                            { label: 'OBIETTIVO MIN. GARANTITO 1', contributi: `€ ${fmtEur(rossoContributi)}`, finanziamenti: '€ 0,00' },
+                            { label: 'OBIETTIVO MIN. GARANTITO 2', contributi: '€ 0,00', finanziamenti: `€ ${fmtEur(rossoFinanziamenti)}` },
+                          ]
+                        : currentModello.obiettiviGarantiti
+                      )?.map((o, i) => (
                         <tr key={i} className="bg-white">
                           <td className="border border-gray-400 px-2 py-1.5 font-semibold text-gray-700">{o.label}</td>
                           <td className="border border-gray-400 px-2 py-1.5 text-gray-700">{o.contributi}</td>
