@@ -474,8 +474,42 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
           </div>
         )}
 
+        {/* CATALOGO_CANONE: fixed monthly plan display */}
+        {isCatalogoCanone && currentModello && (
+          <div className="mt-4 space-y-4">
+            <div className="rounded-md bg-white/60 p-3">
+              <span className="text-[11px] font-medium text-gray-500">Codice Piano</span>
+              <p className="text-sm font-bold text-gray-800">{currentModello.codice}</p>
+              {currentModello.titoloServizio && (
+                <p className="mt-1 text-sm text-gray-700">{currentModello.titoloServizio}</p>
+              )}
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <span className="text-[13px] font-bold text-gray-600">Canone Mensile (€)</span>
+                <input
+                  type="text"
+                  value={`€ ${fmtEur(currentModello.canoneMensile || 0)} / mese`}
+                  readOnly
+                  className="mt-1 w-full rounded-md border border-gray-300 bg-gray-100 px-3 py-2.5 text-sm font-semibold text-gray-700 cursor-not-allowed"
+                />
+              </div>
+              <div>
+                <span className="text-[13px] font-bold text-gray-600">Durata (Mesi) *</span>
+                <input
+                  type="number"
+                  min="1"
+                  value={v2 || ''}
+                  onChange={(e) => setV2(parseFloat(e.target.value) || 0)}
+                  className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm"
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Dynamic fields for non-CATALOGO_FIN */}
-        {currentModello && !isCatalogoFin && (
+        {currentModello && !isCatalogoFin && !isCatalogoCanone && (
           <div className="mt-4 grid grid-cols-2 gap-4">
             {currentModello.hasTipoUnita && (
               <div className="col-span-2">
