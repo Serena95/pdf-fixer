@@ -728,6 +728,28 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
           </div>
         )}
 
+        {/* Detailed breakdown for CATALOGO_PIANO */}
+        {isCatalogoPiano && currentModello && (
+          <div className="mb-4 rounded-md bg-gray-50 border border-gray-200 p-3 text-right text-sm">
+            <div className="flex justify-between text-gray-700">
+              <span className="font-semibold">Piano selezionato:</span>
+              <span>{currentModello.titoloServizio || currentModello.nome}</span>
+            </div>
+            <div className="flex justify-between text-gray-700 mt-1">
+              <span className="font-semibold">Imponibile:</span>
+              <span>€ {fmtEur(imponibile)}</span>
+            </div>
+            <div className="flex justify-between text-gray-700 mt-1">
+              <span className="font-semibold">IVA 22%:</span>
+              <span>€ {fmtEur(imponibile * 0.22)}</span>
+            </div>
+            <div className="flex justify-between text-[#004a99] mt-2 pt-2 border-t border-gray-300 font-bold">
+              <span>Totale:</span>
+              <span>€ {fmtEur(imponibile * 1.22)}</span>
+            </div>
+          </div>
+        )}
+
         <span className="text-[28px] font-bold text-[#004a99]">
           TOTALE: € {totale.toLocaleString('it-IT', { minimumFractionDigits: 2 })}
         </span>
