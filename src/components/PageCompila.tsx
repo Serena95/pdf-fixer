@@ -48,6 +48,9 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
   // CATALOGO_FIN: importo deliberato for success fee calculation
   const [importoDeliberato, setImportoDeliberato] = useState(0);
   const [successFeePerc, setSuccessFeePerc] = useState(0);
+  // CATALOGO_PIANO variabile (ROSSO): obiettivi editabili
+  const [rossoContributi, setRossoContributi] = useState(0);
+  const [rossoFinanziamenti, setRossoFinanziamenti] = useState(0);
 
   // Load logo as base64
   useEffect(() => {
@@ -147,6 +150,8 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
     setModelloIdx('');
     setV1(0); setV2(0); setV3(0); setVQty(1);
     setImportoDeliberato(0);
+    setRossoContributi(0);
+    setRossoFinanziamenti(0);
   };
 
   const handleModelloChange = (val: string) => {
@@ -216,11 +221,16 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
     let obiettiviTable: Array<{ label: string; contributi: string; finanziamenti: string }> | undefined;
     let importoContrattoLabel: string | undefined;
     if (isCatalogoPiano && currentModello) {
-      obiettiviTable = currentModello.obiettiviGarantiti;
+      if (currentModello.variabile) {
+        obiettiviTable = [
+          { label: 'OBIETTIVO MIN. GARANTITO 1', contributi: `€ ${fmtEur(rossoContributi)}`, finanziamenti: '€ 0,00' },
+          { label: 'OBIETTIVO MIN. GARANTITO 2', contributi: '€ 0,00', finanziamenti: `€ ${fmtEur(rossoFinanziamenti)}` },
+        ];
+      } else {
+        obiettiviTable = currentModello.obiettiviGarantiti;
+      }
       const importoFinale = currentModello.variabile ? (v1 || 0) : (currentModello.importoFisso || 0);
-      importoContrattoLabel = currentModello.variabile && !v1
-        ? 'variabile su esigenza del cliente + IVA 22%'
-        : `€ ${fmtEur(importoFinale)} + IVA 22%`;
+      importoContrattoLabel = `€ ${fmtEur(importoFinale)} + IVA 22%`;
     }
 
     // Generate PDF
@@ -289,6 +299,8 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
     setDataInizio(undefined);
     setIvaCheck(false);
     setImportoDeliberato(0);
+    setRossoContributi(0);
+    setRossoFinanziamenti(0);
   };
 
   const showQty = currentModello && (currentModello.fields === 'FISSO' || currentModello.fields === 'FISSO_PERC');
@@ -539,19 +551,53 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
               )}
             </div>
             {currentModello.variabile ? (
-              <div className="rounded-md border-2 border-blue-300 bg-blue-50 p-4">
-                <span className="text-[13px] font-bold text-blue-800">
-                  Importo Contratto (€) * — {currentModello.displayImporto}
-                </span>
-                <input
-                  type="number"
-                  min="0"
-                  value={v1 || ''}
-                  onChange={(e) => setV1(parseFloat(e.target.value) || 0)}
-                  placeholder="Inserisci l'importo concordato..."
-                  className="mt-1 w-full rounded-md border border-blue-300 px-3 py-2.5 text-sm"
-                />
-              </div>
+              <>
+                <div className="rounded-md border-2 border-red-300 bg-red-50 p-4">
+                  <span className="text-[13px] font-bold text-red-800">
+                    Importo Contratto ROSSO (€) * — personalizzabile
+                  </span>
+                  <input
+                    type="number"
+                    min="0"
+                    step="100"
+                    value={v1 || ''}
+                    onChange={(e) => setV1(parseFloat(e.target.value) || 0)}
+                    placeholder="Inserisci l'importo concordato (es. 35000)..."
+                    className="mt-1 w-full rounded-md border border-red-300 px-3 py-2.5 text-sm font-semibold"
+                  />
+                  {v1 > 0 && (
+                    <div className="mt-2 text-[12px] text-red-900 space-y-0.5">
+                      <p>Imponibile: <strong>€ {fmtEur(v1)}</strong></p>
+                      <p>IVA 22%: <strong>€ {fmtEur(v1 * 0.22)}</strong></p>
+                      <p>Totale: <strong>€ {fmtEur(v1 * 1.22)}</strong></p>
+                    </div>
+                  )}
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <span className="text-[13px] font-bold text-gray-600">Obiettivo Contributi (€)</span>
+                    <input
+                      type="number"
+                      min="0"
+                      value={rossoContributi || ''}
+                      onChange={(e) => setRossoContributi(parseFloat(e.target.value) || 0)}
+                      placeholder="es. 60000"
+                      className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm"
+                    />
+                  </div>
+                  <div>
+                    <span className="text-[13px] font-bold text-gray-600">Obiettivo Finanziamenti (€)</span>
+                    <input
+                      type="number"
+                      min="0"
+                      value={rossoFinanziamenti || ''}
+                      onChange={(e) => setRossoFinanziamenti(parseFloat(e.target.value) || 0)}
+                      placeholder="es. 180000"
+                      className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm"
+                    />
+                  </div>
+                </div>
+              </>
             ) : (
               <div>
                 <span className="text-[13px] font-bold text-gray-600">Importo Contratto</span>
@@ -591,7 +637,13 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
                       </tr>
                     </thead>
                     <tbody>
-                      {currentModello.obiettiviGarantiti.map((o, i) => (
+                      {(currentModello.variabile
+                        ? [
+                            { label: 'OBIETTIVO MIN. GARANTITO 1', contributi: `€ ${fmtEur(rossoContributi)}`, finanziamenti: '€ 0,00' },
+                            { label: 'OBIETTIVO MIN. GARANTITO 2', contributi: '€ 0,00', finanziamenti: `€ ${fmtEur(rossoFinanziamenti)}` },
+                          ]
+                        : currentModello.obiettiviGarantiti
+                      )?.map((o, i) => (
                         <tr key={i} className="bg-white">
                           <td className="border border-gray-400 px-2 py-1.5 font-semibold text-gray-700">{o.label}</td>
                           <td className="border border-gray-400 px-2 py-1.5 text-gray-700">{o.contributi}</td>
