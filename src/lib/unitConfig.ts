@@ -151,7 +151,7 @@ export const unitConfig: Record<string, UnitConfig> = {
         ],
       },
       {
-        nome: 'CK-01 ROSSO',
+        nome: 'ROSSO — Consulenza Continuativa Custom',
         fields: 'CATALOGO_PIANO',
         codice: 'CK-01-FIN-PIANO-ROSSO',
         titoloServizio: 'CK-01 ROSSO — Consulenza Continuativa Custom',
