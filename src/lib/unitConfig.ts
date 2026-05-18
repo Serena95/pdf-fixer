@@ -138,7 +138,7 @@ export const unitConfig: Record<string, UnitConfig> = {
         ],
       },
       {
-        nome: 'CK-01 BIANCO',
+        nome: 'BIANCO — Consulenza Continuativa Avanzata',
         fields: 'CATALOGO_PIANO',
         codice: 'CK-01-FIN-PIANO-BIANCO',
         titoloServizio: 'CK-01 BIANCO — Consulenza Continuativa',
