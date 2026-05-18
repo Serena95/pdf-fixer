@@ -122,6 +122,7 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
     currentConfig && modelloIdx !== '' ? currentConfig.modelli[parseInt(modelloIdx)] : null;
 
   const isCatalogoFin = currentModello?.fields === 'CATALOGO_FIN';
+  const isCatalogoCanone = currentModello?.fields === 'CATALOGO_CANONE';
 
   // Calculate imponibile
   let imponibile = 0;
@@ -131,6 +132,8 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
     const fisso = (currentModello.compensoFisso || 0) + (currentModello.compensoFisso2 || 0);
     const successFee = importoDeliberato * (successFeePerc || 0) / 100;
     imponibile = fisso + successFee;
+  } else if (isCatalogoCanone && currentModello) {
+    imponibile = (currentModello.canoneMensile || 0) * (v2 || 0);
   } else if (currentModello) {
     imponibile = calcTotal(currentModello.fields, v1, v2, v3, vQty);
   }
