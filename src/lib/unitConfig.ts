@@ -22,6 +22,7 @@ export interface Modello {
   importoFisso?: number;
   variabile?: boolean;
   displayImporto?: string;
+  obiettiviGarantiti?: Array<{ label: string; contributi: string; finanziamenti: string }>;
 }
 
 export interface UnitConfig {
