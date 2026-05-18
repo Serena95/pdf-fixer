@@ -1,6 +1,6 @@
 export interface Modello {
   nome: string;
-  fields: 'FISSO' | 'FISSO_PERC' | 'CANONE' | 'PACCHETTO' | 'MIX' | 'CAMPAGNA' | 'CATALOGO_FIN' | 'CATALOGO_CANONE';
+  fields: 'FISSO' | 'FISSO_PERC' | 'CANONE' | 'PACCHETTO' | 'MIX' | 'CAMPAGNA' | 'CATALOGO_FIN' | 'CATALOGO_CANONE' | 'CATALOGO_PIANO';
   label?: string;
   label1?: string;
   label2?: string;
@@ -18,6 +18,10 @@ export interface Modello {
   // CATALOGO_CANONE specific (fixed monthly plans)
   canoneMensile?: number;
   titoloServizio?: string;
+  // CATALOGO_PIANO specific (commercial plans with fixed/variable total)
+  importoFisso?: number;
+  variabile?: boolean;
+  displayImporto?: string;
 }
 
 export interface UnitConfig {
@@ -118,6 +122,33 @@ export const unitConfig: Record<string, UnitConfig> = {
         successFeePerc: 7,
         descrizioneOperativa: 'Servizio di consulenza e assistenza tecnica per candidatura al Fondo Sostegno Imprese Turismo 2026, comprensivo di verifica di ammissibilità, progettazione, predisposizione e gestione della domanda Invitalia, supporto istruttorio, monitoraggio e rendicontazione finale del progetto.',
         fasiPagamento: ['€ 2.500,00 alla conferma incarico', '7% success fee su importo deliberato/finanziato'],
+      },
+      {
+        nome: 'CK-01 VERDE — Maestrale 10K',
+        fields: 'CATALOGO_PIANO',
+        codice: 'CK-01-FIN-PIANO-VERDE-Maestrale10K',
+        titoloServizio: 'Maestrale 10K — Consulenza Continuativa',
+        importoFisso: 10000,
+        displayImporto: '10K + IVA',
+        descrizioneOperativa: 'Servizio di consulenza continuativa in finanza agevolata "Maestrale 10K":\n• Analisi dimensionale dell\'azienda ed elenco delle agevolazioni aperte e/o in apertura\n• Analisi pre-fattibilità dei progetti d\'investimento\n• Progettazione e presentazione delle misure agevolative individuate e condivise con il cliente\n• Istruttoria delle domande ed assistenza tecnica alla presentazione\n• Rendicontazione delle misure\n• Garanzia di risultato minimo (obiettivo: € 20.000 contributi o € 50.000 finanziamenti agevolati)\n\nCosto contratto: € 10.000,00 + IVA',
+      },
+      {
+        nome: 'CK-01 BIANCO — Grecale 20K',
+        fields: 'CATALOGO_PIANO',
+        codice: 'CK-01-FIN-PIANO-BIANCO-Grecale20K',
+        titoloServizio: 'Grecale 20K — Consulenza Continuativa',
+        importoFisso: 20000,
+        displayImporto: '20K + IVA',
+        descrizioneOperativa: 'Servizio di consulenza continuativa in finanza agevolata "Grecale 20K":\n• Analisi dimensionale dell\'azienda ed elenco delle agevolazioni aperte e/o in apertura\n• Analisi pre-fattibilità dei progetti d\'investimento\n• Progettazione e presentazione delle misure agevolative individuate e condivise con il cliente\n• Istruttoria delle domande ed assistenza tecnica alla presentazione\n• Rendicontazione delle misure\n• Garanzia di risultato minimo (obiettivo: € 45.000 contributi o € 120.000 finanziamenti agevolati)\n\nCosto contratto: € 20.000,00 + IVA',
+      },
+      {
+        nome: 'CK-01 ROSSO — Scirocco',
+        fields: 'CATALOGO_PIANO',
+        codice: 'CK-01-FIN-PIANO-ROSSO-Scirocco',
+        titoloServizio: 'Scirocco — Consulenza Continuativa Custom',
+        variabile: true,
+        displayImporto: 'Importo variabile + IVA',
+        descrizioneOperativa: 'Servizio di consulenza continuativa in finanza agevolata "Scirocco" — soluzione personalizzata sulle esigenze del cliente:\n• Analisi dimensionale dell\'azienda ed elenco delle agevolazioni aperte e/o in apertura\n• Analisi pre-fattibilità dei progetti d\'investimento\n• Progettazione e presentazione delle misure agevolative individuate e condivise con il cliente\n• Istruttoria delle domande ed assistenza tecnica alla presentazione\n• Rendicontazione delle misure\n• Garanzia di risultato minimo (obiettivi da definire con il cliente)\n\nCosto contratto: variabile su esigenza del cliente + IVA',
       },
     ],
   },

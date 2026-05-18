@@ -123,6 +123,7 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
 
   const isCatalogoFin = currentModello?.fields === 'CATALOGO_FIN';
   const isCatalogoCanone = currentModello?.fields === 'CATALOGO_CANONE';
+  const isCatalogoPiano = currentModello?.fields === 'CATALOGO_PIANO';
 
   // Calculate imponibile
   let imponibile = 0;
@@ -134,6 +135,8 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
     imponibile = fisso + successFee;
   } else if (isCatalogoCanone && currentModello) {
     imponibile = (currentModello.canoneMensile || 0) * (v2 || 0);
+  } else if (isCatalogoPiano && currentModello) {
+    imponibile = currentModello.variabile ? (v1 || 0) : (currentModello.importoFisso || 0);
   } else if (currentModello) {
     imponibile = calcTotal(currentModello.fields, v1, v2, v3, vQty);
   }
@@ -157,7 +160,7 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
     const cfg = key ? unitConfig[key] : null;
     const mod = cfg && val !== '' ? cfg.modelli[parseInt(val)] : null;
     setSuccessFeePerc(mod?.successFeePerc || 0);
-    if ((mod?.fields === 'CATALOGO_FIN' || mod?.fields === 'CATALOGO_CANONE') && mod.descrizioneOperativa) {
+    if ((mod?.fields === 'CATALOGO_FIN' || mod?.fields === 'CATALOGO_CANONE' || mod?.fields === 'CATALOGO_PIANO') && mod.descrizioneOperativa) {
       setDescServizio(mod.descrizioneOperativa);
     } else {
       setDescServizio('');
@@ -185,6 +188,9 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
     } else if (isCatalogoCanone && currentModello) {
       pdfQty = v2 || 1;
       pdfUnitPrice = currentModello.canoneMensile || 0;
+    } else if (isCatalogoPiano) {
+      pdfQty = 1;
+      pdfUnitPrice = imponibile;
     } else if (currentModello?.fields === 'CANONE' || currentModello?.fields === 'PACCHETTO') {
       pdfQty = v2 || 1;
       pdfUnitPrice = v1;
@@ -508,8 +514,46 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
           </div>
         )}
 
-        {/* Dynamic fields for non-CATALOGO_FIN */}
-        {currentModello && !isCatalogoFin && !isCatalogoCanone && (
+        {/* CATALOGO_PIANO: commercial plan (fixed or variable) */}
+        {isCatalogoPiano && currentModello && (
+          <div className="mt-4 space-y-4">
+            <div className="rounded-md bg-white/60 p-3">
+              <span className="text-[11px] font-medium text-gray-500">Codice Piano</span>
+              <p className="text-sm font-bold text-gray-800">{currentModello.codice}</p>
+              {currentModello.titoloServizio && (
+                <p className="mt-1 text-sm text-gray-700">{currentModello.titoloServizio}</p>
+              )}
+            </div>
+            {currentModello.variabile ? (
+              <div className="rounded-md border-2 border-blue-300 bg-blue-50 p-4">
+                <span className="text-[13px] font-bold text-blue-800">
+                  Importo Contratto (€) * — {currentModello.displayImporto}
+                </span>
+                <input
+                  type="number"
+                  min="0"
+                  value={v1 || ''}
+                  onChange={(e) => setV1(parseFloat(e.target.value) || 0)}
+                  placeholder="Inserisci l'importo concordato..."
+                  className="mt-1 w-full rounded-md border border-blue-300 px-3 py-2.5 text-sm"
+                />
+              </div>
+            ) : (
+              <div>
+                <span className="text-[13px] font-bold text-gray-600">Importo Contratto</span>
+                <input
+                  type="text"
+                  value={`€ ${fmtEur(currentModello.importoFisso || 0)}  (${currentModello.displayImporto || ''})`}
+                  readOnly
+                  className="mt-1 w-full rounded-md border border-gray-300 bg-gray-100 px-3 py-2.5 text-sm font-semibold text-gray-700 cursor-not-allowed"
+                />
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Dynamic fields for non-CATALOGO_* */}
+        {currentModello && !isCatalogoFin && !isCatalogoCanone && !isCatalogoPiano && (
           <div className="mt-4 grid grid-cols-2 gap-4">
             {currentModello.hasTipoUnita && (
               <div className="col-span-2">
