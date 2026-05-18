@@ -219,11 +219,16 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
     let obiettiviTable: Array<{ label: string; contributi: string; finanziamenti: string }> | undefined;
     let importoContrattoLabel: string | undefined;
     if (isCatalogoPiano && currentModello) {
-      obiettiviTable = currentModello.obiettiviGarantiti;
+      if (currentModello.variabile) {
+        obiettiviTable = [
+          { label: 'OBIETTIVO MIN. GARANTITO 1', contributi: `€ ${fmtEur(rossoContributi)}`, finanziamenti: '€ 0,00' },
+          { label: 'OBIETTIVO MIN. GARANTITO 2', contributi: '€ 0,00', finanziamenti: `€ ${fmtEur(rossoFinanziamenti)}` },
+        ];
+      } else {
+        obiettiviTable = currentModello.obiettiviGarantiti;
+      }
       const importoFinale = currentModello.variabile ? (v1 || 0) : (currentModello.importoFisso || 0);
-      importoContrattoLabel = currentModello.variabile && !v1
-        ? 'variabile su esigenza del cliente + IVA 22%'
-        : `€ ${fmtEur(importoFinale)} + IVA 22%`;
+      importoContrattoLabel = `€ ${fmtEur(importoFinale)} + IVA 22%`;
     }
 
     // Generate PDF
