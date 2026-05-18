@@ -186,8 +186,65 @@ export function generatePDF(data: PdfData) {
   // Linea chiusura riga
   doc.line(marginL, rowBottom, marginL + contentW, rowBottom);
 
+  // === TABELLA OBIETTIVI GARANTITI (CK-01 piani) ===
+  y = rowBottom + 8;
+  if (data.obiettiviTable && data.obiettiviTable.length > 0) {
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(9);
+    doc.text('TABELLA A — Garanzia di risultato minimo', marginL, y);
+    y += 4;
+
+    const tCol1W = contentW * 0.44; // Obiettivo
+    const tCol2W = contentW * 0.28; // Contributi
+    const tCol3W = contentW * 0.28; // Finanziamenti
+    const tCol1X = marginL;
+    const tCol2X = tCol1X + tCol1W;
+    const tCol3X = tCol2X + tCol2W;
+    const tEndX = marginL + contentW;
+
+    const rowH = 8;
+    const headerH = 7;
+
+    // Header background
+    doc.setFillColor(230, 235, 245);
+    doc.rect(tCol1X, y, contentW, headerH, 'F');
+    doc.setDrawColor(0);
+    doc.setLineWidth(0.2);
+    doc.rect(tCol1X, y, contentW, headerH);
+    doc.line(tCol2X, y, tCol2X, y + headerH);
+    doc.line(tCol3X, y, tCol3X, y + headerH);
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(8);
+    doc.text('Obiettivo', tCol1X + 2, y + 4.7);
+    doc.text('Contributi', tCol2X + tCol2W / 2, y + 4.7, { align: 'center' });
+    doc.text('Finanziamenti', tCol3X + tCol3W / 2, y + 4.7, { align: 'center' });
+    y += headerH;
+
+    doc.setFont('helvetica', 'normal');
+    data.obiettiviTable.forEach((o) => {
+      doc.rect(tCol1X, y, contentW, rowH);
+      doc.line(tCol2X, y, tCol2X, y + rowH);
+      doc.line(tCol3X, y, tCol3X, y + rowH);
+      doc.text(o.label, tCol1X + 2, y + 5);
+      doc.text(o.contributi, tCol2X + tCol2W / 2, y + 5, { align: 'center' });
+      doc.text(o.finanziamenti, tCol3X + tCol3W / 2, y + 5, { align: 'center' });
+      y += rowH;
+    });
+
+    if (data.importoContrattoLabel) {
+      y += 5;
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9);
+      doc.text('Importo contratto: ', marginL, y);
+      doc.setFont('helvetica', 'normal');
+      doc.text(data.importoContrattoLabel, marginL + 35, y);
+    }
+    y += 3;
+  }
+
   // === RIEPILOGO ===
-  y = rowBottom + 5;
+  y = y + 5;
   const sumLabelX = marginL + contentW - 70;
   const sumValX = marginL + contentW;
 
