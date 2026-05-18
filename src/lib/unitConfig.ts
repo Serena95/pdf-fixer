@@ -125,7 +125,7 @@ export const unitConfig: Record<string, UnitConfig> = {
         fasiPagamento: ['€ 2.500,00 alla conferma incarico', '7% success fee su importo deliberato/finanziato'],
       },
       {
-        nome: 'CK-01 VERDE',
+        nome: 'VERDE — Consulenza Continuativa Base',
         fields: 'CATALOGO_PIANO',
         codice: 'CK-01-FIN-PIANO-VERDE',
         titoloServizio: 'CK-01 VERDE — Consulenza Continuativa',
@@ -138,7 +138,7 @@ export const unitConfig: Record<string, UnitConfig> = {
         ],
       },
       {
-        nome: 'CK-01 BIANCO',
+        nome: 'BIANCO — Consulenza Continuativa Avanzata',
         fields: 'CATALOGO_PIANO',
         codice: 'CK-01-FIN-PIANO-BIANCO',
         titoloServizio: 'CK-01 BIANCO — Consulenza Continuativa',
@@ -151,7 +151,7 @@ export const unitConfig: Record<string, UnitConfig> = {
         ],
       },
       {
-        nome: 'CK-01 ROSSO',
+        nome: 'ROSSO — Consulenza Continuativa Custom',
         fields: 'CATALOGO_PIANO',
         codice: 'CK-01-FIN-PIANO-ROSSO',
         titoloServizio: 'CK-01 ROSSO — Consulenza Continuativa Custom',
