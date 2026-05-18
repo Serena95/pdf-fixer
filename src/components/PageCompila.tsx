@@ -168,6 +168,9 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
     if (mod?.fields === 'CATALOGO_CANONE') {
       setV2(1); // default 1 mese
     }
+    if (mod?.fields === 'CATALOGO_PIANO') {
+      setIvaCheck(true); // IVA sempre applicata sui piani commerciali
+    }
   };
 
   const fmtEur = (n: number) => n.toLocaleString('it-IT', { minimumFractionDigits: 2 });
