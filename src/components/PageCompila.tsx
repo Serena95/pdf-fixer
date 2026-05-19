@@ -654,10 +654,10 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
                   </table>
                 </div>
                 <p className="mt-3 text-[12px] font-bold text-gray-800">
-                  Garanzia di risultato minimo: si considera raggiunto al verificarsi di UNA SOLA delle voci della tabella obiettivi (non di tutte).
+                  Garanzia di risultato minimo: si considera raggiunto al verificarsi di UNA SOLA delle voci della tabella obiettivi (non di tutte e due).
                 </p>
                 <p className="mt-2 text-[12px] font-bold text-gray-800">
-                  Questa somma si intende a copertura di un massimo di 3 bandi l'anno.
+                  L'importo contrattuale è riferibile all'attività riconducibile ad un massimo di 3 bandi l'anno.
                 </p>
               </div>
             )}
