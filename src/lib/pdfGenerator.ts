@@ -244,6 +244,22 @@ export function generatePDF(data: PdfData) {
     doc.text(notaLines, marginL, y);
     y += notaLines.length * 4;
 
+    // Avviso evidenziato: copertura massima 3 bandi/anno
+    y += 1;
+    const avviso = "Questa somma si intende a copertura di un massimo di 3 bandi l'anno.";
+    const avvisoLines = doc.splitTextToSize(avviso, contentW - 4);
+    const avvisoH = avvisoLines.length * 4 + 4;
+    doc.setFillColor(255, 230, 230);
+    doc.setDrawColor(200, 0, 0);
+    doc.setLineWidth(0.4);
+    doc.rect(marginL, y, contentW, avvisoH, 'FD');
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(9);
+    doc.setTextColor(150, 0, 0);
+    doc.text(avvisoLines, marginL + 2, y + 5);
+    doc.setTextColor(0, 0, 0);
+    y += avvisoH;
+
     if (data.importoContrattoLabel) {
       y += 3;
       doc.setFont('helvetica', 'bold');
