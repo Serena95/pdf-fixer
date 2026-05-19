@@ -653,11 +653,11 @@ export default function PageCompila({ preloadCliente, onClienteConsumed }: Props
                     </tbody>
                   </table>
                 </div>
-                <div className="mt-3 rounded-md border-2 border-red-500 bg-red-50 p-3">
-                  <p className="text-[12px] font-semibold text-red-800">
+                <div className="mt-3 rounded-md border-2 border-gray-400 bg-gray-50 p-3">
+                  <p className="text-[12px] font-semibold text-gray-800">
                     ⚠️ Garanzia di risultato minimo: si considera raggiunto al verificarsi di <strong>UNA SOLA</strong> delle voci della tabella obiettivi (non di tutte).
                   </p>
-                  <p className="mt-1 text-[12px] font-bold text-red-900 uppercase">
+                  <p className="mt-1 text-[12px] font-bold text-gray-900 uppercase">
                     Questa somma si intende a copertura di un massimo di 3 bandi l'anno.
                   </p>
                 </div>
