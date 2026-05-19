@@ -237,27 +237,12 @@ export function generatePDF(data: PdfData) {
 
     // Nota
     y += 4;
-    doc.setFont('helvetica', 'italic');
+    doc.setFont('helvetica', 'bold');
     doc.setFontSize(8);
-    const nota = "Nota: l'obiettivo minimo garantito si intende raggiunto al verificarsi di UNA SOLA delle voci indicate in tabella, non di tutte.";
+    const nota = "Garanzia di risultato minimo: si considera raggiunto al verificarsi di UNA SOLA delle voci della tabella obiettivi (non di tutte). Questa somma si intende a copertura di un massimo di 3 bandi l'anno.";
     const notaLines = doc.splitTextToSize(nota, contentW);
     doc.text(notaLines, marginL, y);
     y += notaLines.length * 4;
-
-    // Avviso evidenziato: copertura massima 3 bandi/anno
-    y += 1;
-    const avviso = "Questa somma si intende a copertura di un massimo di 3 bandi l'anno.";
-    const avvisoLines = doc.splitTextToSize(avviso, contentW - 4);
-    const avvisoH = avvisoLines.length * 4 + 4;
-    doc.setFillColor(240, 240, 240);
-    doc.setDrawColor(120, 120, 120);
-    doc.setLineWidth(0.4);
-    doc.rect(marginL, y, contentW, avvisoH, 'FD');
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(9);
-    doc.setTextColor(0, 0, 0);
-    doc.text(avvisoLines, marginL + 2, y + 5);
-    y += avvisoH;
 
     if (data.importoContrattoLabel) {
       y += 3;
