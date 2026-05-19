@@ -131,7 +131,7 @@ export const unitConfig: Record<string, UnitConfig> = {
         titoloServizio: 'CK-01 VERDE — Consulenza Continuativa',
         importoFisso: 10000,
         displayImporto: '€ 10.000,00 + IVA',
-        descrizioneOperativa: 'Servizio di consulenza continuativa in finanza agevolata — pacchetto VERDE.\n\nAttività comprese:\n• Analisi dimensionale dell\'azienda ed elenco delle agevolazioni aperte e/o in apertura\n• Analisi pre-fattibilità dei progetti d\'investimento\n• Progettazione e presentazione delle misure agevolative individuate e condivise con il cliente\n• Istruttoria delle domande ed assistenza tecnica alla presentazione\n• Rendicontazione delle misure\n• Garanzia di risultato minimo: si considera raggiunto al verificarsi di UNA SOLA delle voci della tabella obiettivi (non di tutte)\n\nCosto contratto: € 10.000,00 + IVA',
+        descrizioneOperativa: 'Servizio di consulenza continuativa in finanza agevolata — pacchetto VERDE.\n\nAttività comprese:\n• Analisi dimensionale dell\'azienda ed elenco delle agevolazioni aperte e/o in apertura\n• Analisi pre-fattibilità dei progetti d\'investimento\n• Progettazione e presentazione delle misure agevolative individuate e condivise con il cliente\n• Istruttoria delle domande ed assistenza tecnica alla presentazione\n• Rendicontazione delle misure\n\nCosto contratto: € 10.000,00 + IVA',
         obiettiviGarantiti: [
           { label: 'OBIETTIVO MIN. GARANTITO 1', contributi: '€ 20.000,00', finanziamenti: '€ 0,00' },
           { label: 'OBIETTIVO MIN. GARANTITO 2', contributi: '€ 0,00', finanziamenti: '€ 50.000,00' },
@@ -144,7 +144,7 @@ export const unitConfig: Record<string, UnitConfig> = {
         titoloServizio: 'CK-01 BIANCO — Consulenza Continuativa',
         importoFisso: 20000,
         displayImporto: '€ 20.000,00 + IVA',
-        descrizioneOperativa: 'Servizio di consulenza continuativa in finanza agevolata — pacchetto BIANCO.\n\nAttività comprese:\n• Analisi dimensionale dell\'azienda ed elenco delle agevolazioni aperte e/o in apertura\n• Analisi pre-fattibilità dei progetti d\'investimento\n• Progettazione e presentazione delle misure agevolative individuate e condivise con il cliente\n• Istruttoria delle domande ed assistenza tecnica alla presentazione\n• Rendicontazione delle misure\n• Garanzia di risultato minimo: si considera raggiunto al verificarsi di UNA SOLA delle voci della tabella obiettivi (non di tutte)\n\nCosto contratto: € 20.000,00 + IVA',
+        descrizioneOperativa: 'Servizio di consulenza continuativa in finanza agevolata — pacchetto BIANCO.\n\nAttività comprese:\n• Analisi dimensionale dell\'azienda ed elenco delle agevolazioni aperte e/o in apertura\n• Analisi pre-fattibilità dei progetti d\'investimento\n• Progettazione e presentazione delle misure agevolative individuate e condivise con il cliente\n• Istruttoria delle domande ed assistenza tecnica alla presentazione\n• Rendicontazione delle misure\n\nCosto contratto: € 20.000,00 + IVA',
         obiettiviGarantiti: [
           { label: 'OBIETTIVO MIN. GARANTITO 1', contributi: '€ 45.000,00', finanziamenti: '€ 0,00' },
           { label: 'OBIETTIVO MIN. GARANTITO 2', contributi: '€ 0,00', finanziamenti: '€ 120.000,00' },
@@ -157,7 +157,7 @@ export const unitConfig: Record<string, UnitConfig> = {
         titoloServizio: 'CK-01 ROSSO — Consulenza Continuativa Custom',
         variabile: true,
         displayImporto: 'Importo variabile + IVA',
-        descrizioneOperativa: 'Servizio di consulenza continuativa in finanza agevolata — pacchetto ROSSO, soluzione personalizzata sulle esigenze del cliente.\n\nAttività comprese:\n• Analisi dimensionale dell\'azienda ed elenco delle agevolazioni aperte e/o in apertura\n• Analisi pre-fattibilità dei progetti d\'investimento\n• Progettazione e presentazione delle misure agevolative individuate e condivise con il cliente\n• Istruttoria delle domande ed assistenza tecnica alla presentazione\n• Rendicontazione delle misure\n• Garanzia di risultato minimo: si considera raggiunta al verificarsi di UNA SOLA delle voci della tabella obiettivi (non di tutte) — soglie da definire con il cliente\n\nCosto contratto: variabile su esigenza del cliente + IVA',
+        descrizioneOperativa: 'Servizio di consulenza continuativa in finanza agevolata — pacchetto ROSSO, soluzione personalizzata sulle esigenze del cliente.\n\nAttività comprese:\n• Analisi dimensionale dell\'azienda ed elenco delle agevolazioni aperte e/o in apertura\n• Analisi pre-fattibilità dei progetti d\'investimento\n• Progettazione e presentazione delle misure agevolative individuate e condivise con il cliente\n• Istruttoria delle domande ed assistenza tecnica alla presentazione\n• Rendicontazione delle misure\n\nCosto contratto: variabile su esigenza del cliente + IVA',
         obiettiviGarantiti: [
           { label: 'OBIETTIVO MIN. GARANTITO 1', contributi: 'Da definire', finanziamenti: '€ 0,00' },
           { label: 'OBIETTIVO MIN. GARANTITO 2', contributi: '€ 0,00', finanziamenti: 'Da definire' },
